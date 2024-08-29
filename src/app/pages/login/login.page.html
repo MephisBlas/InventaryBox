@@ -1,0 +1,50 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Inicio de sesión</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding" scroll-events="true">
+  <div class="login-container animate__animated animate__fadeIn">
+    <ion-card class="login-card">
+      <ion-card-header>
+        <ion-card-title class="ion-text-center animate__animated animate__bounceInDown">Bienvenido</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <!-- Campo de usuario -->
+      
+        <ion-item class="input-item animate__animated animate__fadeInLeft animate__delay-1s">
+          <ion-label position="floating" class="animate__animated animate__fadeInLeft">Usuario</ion-label>
+          <ion-input type="text" placeholder=""></ion-input>
+        </ion-item>
+
+        <!-- Campo de contraseña -->
+       
+        <ion-item class="input-item animate__animated animate__fadeInLeft animate__delay-2s">
+          <ion-label position="floating" class="animate__animated animate__fadeInLeft">Contraseña</ion-label>
+          <ion-input type="password" placeholder=""></ion-input>
+        </ion-item>
+
+        <!-- Botón de inicio de sesión -->
+        <div class="login-actions animate__animated animate__fadeInUp animate__delay-3s">
+          <ion-button expand="block" color="primary" (click)="login()">Iniciar Sesión</ion-button>
+        </div>
+
+        <!-- Enlace de recuperación de contraseña -->
+        <div class="login-links ion-text-center animate__animated animate__fadeInUp animate__delay-4s">
+          <ion-text>
+            <small><a href="recuperacionpass">¿Olvidaste tu contraseña?</a></small>
+          </ion-text>
+        </div>
+        
+        <!-- Mensaje y botón para registrar -->
+        <div class="login-links ion-text-center animate__animated animate__fadeInUp animate__delay-4s">
+          <ion-text>
+            <small><a href="registro">¿Aún no tienes cuenta? Registrate</a></small>
+          </ion-text>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

@@ -1,0 +1,148 @@
+ion-content {
+  --overflow: hidden; /* Oculta el desbordamiento en el contenido */
+}
+
+.login-container {
+  display: grid;
+  place-items: center; /* Centra el contenido horizontal y verticalmente */
+  height: 100vh; /* Ocupa toda la altura de la ventana */
+  padding: 0 16px; /* Añade un poco de padding lateral */
+  box-sizing: border-box; /* Incluye el padding en el ancho y alto total */
+  animation: containerFadeIn 0.8s ease-out; /* Animación del contenedor */
+}
+
+.login-card {
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 16px;
+  animation: cardBounceIn 1s ease-out; /* Animación de la tarjeta */
+}
+
+ion-item {
+  margin-bottom: 16px; /* Espaciado entre los campos */
+  animation: fieldFadeIn 0.6s ease-out; /* Animación de los campos del formulario */
+}
+
+/* Animación para los campos */
+@keyframes fieldFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Animación para el contenedor */
+@keyframes containerFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animación para la tarjeta */
+@keyframes cardBounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Estilo del botón de inicio de sesión y botón de registro */
+.login-actions ion-button,
+.register-prompt ion-button {
+  --background: #3880ff; /* Color del botón */
+  --color: #fff;
+  transition: background 0.3s ease, transform 0.3s ease; /* Transición suave */
+}
+
+/* Animación para el botón de inicio de sesión y botón de registro */
+.login-actions ion-button:hover,
+.register-prompt ion-button:hover {
+  background: #3171e0; /* Fondo colorido al pasar el mouse */
+  transform: translateY(-2px); /* Pequeño movimiento hacia arriba al pasar el mouse */
+}
+
+/* Enlace de recuperación de contraseña */
+.login-links {
+  margin-top: 16px;
+  /* Añadimos un efecto de transición suave */
+  transition: transform 0.3s ease-in-out;
+}
+
+.login-links a {
+  color: var(--ion-color-primary);
+  text-decoration: none;
+}
+
+/* Efecto hover para el enlace de "¿Olvidaste tu contraseña?" */
+.login-links:hover {
+  transform: scale(1.05);
+}
+
+/* Estilo para el mensaje y botón de registro */
+.register-prompt {
+  margin-top: 24px;
+  animation: promptFadeIn 0.6s ease-out;
+}
+
+.register-prompt p {
+  margin-bottom: 8px;
+  color: #888; /* Color sutil para el mensaje */
+}
+
+/* Animación para el mensaje y botón de registro */
+@keyframes promptFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animación de pulso del botón en la página de registro */
+.submit-button {
+  margin-top: 16px;
+  --background: #3880ff; /* Color del botón */
+  --color: #fff;
+  animation: buttonPulse 1.5s infinite; /* Animación de pulso del botón */
+}
+
+/* Animación de pulso del botón */
+@keyframes buttonPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+}
+
+/* Importar Animate.css */
+@import '~animate.css/animate.min.css';
