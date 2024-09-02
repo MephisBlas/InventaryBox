@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-registro',
@@ -13,13 +14,28 @@ export class RegistroPage {
     confirmPassword: ''
   };
 
-  constructor() {}
+  constructor(private router: Router) {}
 
   // Función para manejar el registro de usuario
   registerUser() {
     if (this.passwordsMatch()) {
-      // Aquí puedes manejar el registro de usuario, por ejemplo, enviando los datos a una API
+      // Obtener los usuarios existentes del almacenamiento local
+      const storedUsers = JSON.parse(localStorage.getItem('users') || '[]');
+
+      // Agregar el nuevo usuario a la lista
+      storedUsers.push({
+        username: this.user.username,
+        email: this.user.email,
+        password: this.user.password
+      });
+
+      // Guardar la lista actualizada en el almacenamiento local
+      localStorage.setItem('users', JSON.stringify(storedUsers));
+
       console.log('Usuario registrado:', this.user);
+
+      // Redirigir al usuario a la página de inicio de sesión
+      this.router.navigate(['/home']);
     } else {
       console.log('Las contraseñas no coinciden.');
     }

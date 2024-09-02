@@ -38,31 +38,26 @@
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 
 
-
-  
-/* variables.scss */
-
+/* Tema claro */
 :root {
-    --background-image: url('/assets/images/background-light.jpg');
-    /* Otros colores para el tema claro */
-    --ion-background-color: #ffffff;
-    --ion-text-color: #000000;
-  }
-  
-  :root[data-theme='dark'] {
-    --background-image: url('/assets/images/background-dark.png');
-    /* Otros colores para el tema oscuro */
-    --ion-background-color: #000000;
-    --ion-text-color: #ffffff;
-  }
-/* global.scss */
+  --ion-background-color: #ffffff;
+  --ion-text-color: #000000;
+  --background-image: url('/assets/images/background-light.png'); /* Imagen de fondo para tema claro */
+}
 
-ion-content {
-    background-color: var(--ion-background-color);
-    color: var(--ion-text-color);
-    background-image: var(--background-image);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat; /* Asegúrate de que la imagen no se repita */
-  }
-  
+/* Tema oscuro */
+[data-theme='dark'] {
+  --ion-background-color: #000000;
+  --ion-text-color: #ffffff;
+  --ion-icon-color:#ffff;  
+  --background-image: url('/assets/images/background-dark.png'); /* Imagen de fondo para tema oscuro */
+}
+
+/* Aplicar la imagen de fondo de acuerdo con el tema */
+body {
+  background-image: var(--background-image);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+
+}

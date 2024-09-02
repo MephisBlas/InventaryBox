@@ -1,156 +1,119 @@
-ion-content {
-    --overflow: hidden; /* Oculta el desbordamiento en el contenido */
+/* Estilos globales para la página de registro */
+.register-container {
+  display: grid;
+  place-items: center; /* Centra el contenido horizontal y verticalmente */
+  height: 100vh; /* Ocupa toda la altura de la ventana */
+  padding: 0 16px; /* Añade un poco de padding lateral */
+  box-sizing: border-box; /* Incluye el padding en el ancho y alto total */
+  animation: containerFadeIn 0.8s ease-out; /* Animación del contenedor */
+}
+
+.register-card {
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 16px;
+  animation: cardBounceIn 1s ease-out; /* Animación de la tarjeta */
+}
+
+ion-item {
+  margin-bottom: 16px; /* Espaciado entre los campos */
+  animation: fieldFadeIn 0.6s ease-out; /* Animación de los campos del formulario */
+}
+
+/* Animación para los campos */
+@keyframes fieldFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
   }
-  
-  .login-container {
-    display: grid;
-    place-items: center; /* Centra el contenido horizontal y verticalmente */
-    height: 100vh; /* Ocupa toda la altura de la ventana */
-    padding: 0 16px; /* Añade un poco de padding lateral */
-    box-sizing: border-box; /* Incluye el padding en el ancho y alto total */
-    animation: containerFadeIn 0.8s ease-out; /* Animación del contenedor */
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
-  
-  .login-card {
-    width: 100%;
-    max-width: 500px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    padding: 16px;
-    animation: cardBounceIn 1s ease-out; /* Animación de la tarjeta */
+}
+
+/* Animación para el contenedor */
+@keyframes containerFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
   }
-  
-  ion-item {
-    margin-bottom: 16px; /* Espaciado entre los campos */
-    animation: fieldFadeIn 0.6s ease-out; /* Animación de los campos del formulario */
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  /* Animación para los campos */
-  @keyframes fieldFadeIn {
-    from {
-      opacity: 0;
-      transform: translateX(-20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
+}
+
+/* Animación para la tarjeta */
+@keyframes cardBounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
   }
-  
-  /* Animación para el contenedor */
-  @keyframes containerFadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  /* Animación para la tarjeta */
-  @keyframes cardBounceIn {
-    0% {
-      opacity: 0;
-      transform: scale(0.8);
-    }
-    50% {
-      opacity: 1;
-      transform: scale(1.05);
-    }
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-  
-  /* Estilo del botón de inicio de sesión */
-  .login-actions ion-button {
-    --background: #3880ff; /* Color del botón */
-    --color: #fff;
-    transition: background 0.3s ease, transform 0.3s ease; /* Transición suave */
-  }
-  
-  /* Animación para el botón de inicio de sesión */
-  .login-actions ion-button:hover {
-    background: #3171e0; /* Fondo colorido al pasar el mouse */
-    transform: translateY(-2px); /* Pequeño movimiento hacia arriba al pasar el mouse */
-  }
-  
-  /* Enlace de recuperación de contraseña */
-  .login-links {
-    margin-top: 16px;
-    /* Añadimos un efecto de transición suave */
-    transition: transform 0.3s ease-in-out;
-  }
-  
-  .login-links a {
-    color: var(--ion-color-primary);
-    text-decoration: none;
-  }
-  
-  /* Efecto hover para el enlace de "¿Olvidaste tu contraseña?" */
-  .login-links:hover {
+  50% {
+    opacity: 1;
     transform: scale(1.05);
   }
-  
-  /* Estilo para el mensaje y botón de registro */
-  .register-prompt {
-    margin-top: 24px;
-    animation: promptFadeIn 0.6s ease-out;
+  100% {
+    opacity: 1;
+    transform: scale(1);
   }
-  
-  .register-prompt p {
-    margin-bottom: 8px;
-    color: #888; /* Color sutil para el mensaje */
+}
+
+/* Estilo del botón de registro */
+.register-actions ion-button {
+  --background: #3880ff; /* Color del botón */
+  --color: #fff;
+  transition: background 0.3s ease, transform 0.3s ease; /* Transición suave */
+  animation: buttonPulse 1.2s infinite; /* Animación de pulso del botón */
+}
+
+/* Animación para el botón de registro */
+@keyframes buttonPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
   }
-  
-  /* Estilo del botón de registro */
-  .register-prompt ion-button {
-    --background: transparent; /* Fondo transparente para un estilo sutil */
-    --color: #3880ff; /* Color del texto del botón */
-    --border-color: #3880ff; /* Color del borde del botón */
-    --border-width: 1px; /* Ancho del borde */
-    --border-style: solid; /* Estilo del borde */
-    --border-radius: 5px; /* Bordes redondeados */
-    --padding-start: 12px;
-    --padding-end: 12px;
-    --padding-top: 8px;
-    --padding-bottom: 8px;
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
   }
-  
-  /* Animación para el botón de registro */
-  .register-prompt ion-button:hover {
-    background: #3880ff; /* Fondo colorido al pasar el mouse */
-    color: #fff; /* Color del texto al pasar el mouse */
-    transform: translateY(-2px); /* Pequeño movimiento hacia arriba al pasar el mouse */
+  100% {
+    transform: scale(1);
+    opacity: 0.9;
   }
-  
-  /* Animación de pulso del botón en la página de registro */
-  .submit-button {
-    margin-top: 16px;
-    --background: #3880ff; /* Color del botón */
-    --color: #fff;
-    animation: buttonPulse 0.5s infinite; /* Animación de pulso del botón */
+}
+
+/* Estilo para el botón de registro en hover */
+.register-actions ion-button:hover {
+  background: #3171e0; /* Fondo colorido al pasar el mouse */
+  transform: translateY(-2px); /* Pequeño movimiento hacia arriba al pasar el mouse */
+}
+
+/* Estilo del mensaje de registro */
+.register-prompt {
+  margin-top: 24px;
+  animation: promptFadeIn 0.6s ease-out;
+}
+
+.register-prompt p {
+  margin-bottom: 8px;
+  color: #888; /* Color sutil para el mensaje */
+}
+
+/* Animación para el mensaje y botón de registro */
+@keyframes promptFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  
-  /* Animación de pulso del botón */
-  @keyframes buttonPulse {
-    0% {
-      transform: scale(1);
-      opacity: 0.9;
-    }
-    50% {
-      transform: scale(1.05);
-      opacity: 1;
-    }
-    100% {
-      transform: scale(1);
-      opacity: 0.9;
-    }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  /* Importar Animate.css */
-  @import '~animate.css/animate.min.css';
-  
+}
+
+/* Importar Animate.css (si lo usas) */
+@import '~animate.css/animate.min.css';
