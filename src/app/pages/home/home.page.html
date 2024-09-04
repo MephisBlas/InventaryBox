@@ -8,19 +8,19 @@
   <ion-content class="ion-padding">
     <div class="menu-content">
       <!-- Contenido del menú -->
-      <ion-list class="animate__animated animate__fadeInLeft">
-        <ion-item routerLink="/profile" (click)="closeMenu()" class="animate__animated animate__fadeInLeft animate__delay-1s">
+      <ion-list >
+        <ion-item routerLink="/perfil" (click)="closeMenu()" >
           <ion-icon slot="start" name="person"></ion-icon>
           <ion-label>Perfil</ion-label>
         </ion-item>
-        <ion-item routerLink="/configuracion" (click)="closeMenu()" class="animate__animated animate__fadeInLeft animate__delay-2s">
+        <ion-item routerLink="/configuracion" (click)="closeMenu()" >
           <ion-icon slot="start" name="settings"></ion-icon>
           <ion-label>Configuraciones</ion-label>
         </ion-item>
       </ion-list>
 
       <!-- Botón de Cerrar Sesión al final del menú -->
-      <ion-footer class="ion-no-border animate__animated animate__fadeInUp animate__delay-3s">
+      <ion-footer class="ion-no-border ">
         <ion-toolbar>
           <ion-button expand="full" color="danger" (click)="logout()">
             <ion-icon slot="start" name="log-out"></ion-icon>

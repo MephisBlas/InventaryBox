@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -12,30 +13,50 @@ export class LoginPage implements OnInit {
     password: ''
   };
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private alertController: AlertController) {}
 
   ngOnInit() {
-    // Cualquier lógica que necesites al inicializar el componente
+    // Inicialización si es necesaria
   }
 
-  login() {
-    const storedUsers = JSON.parse(localStorage.getItem('users') || '[]');
+  async login() {
+    // Validar que los campos no estén vacíos
+    if (!this.user.username || !this.user.password) {
+      await this.showAlert('Error', 'Por favor, ingrese el nombre de usuario y la contraseña.');
+      return;
+    }
 
-    // Busca el usuario en el almacenamiento local
-    const foundUser = storedUsers.find((user: any) => user.username === this.user.username && user.password === this.user.password);
+    // Recuperar usuarios almacenados en localStorage
+    const storedUsers = JSON.parse(localStorage.getItem('users') || '[]');
+    
+    // Depuración: Verifica los datos almacenados
+    console.log('Usuarios almacenados:', storedUsers);
+
+    // Verificar si el usuario existe en la lista y si la contraseña es correcta
+    const foundUser = storedUsers.find((u: any) => u.username === this.user.username && u.password === this.user.password);
 
     if (foundUser) {
-      // Si el usuario es encontrado, redirigir a la página de inicio
-      console.log('Inicio de sesión exitoso');
+      // Inicio de sesión exitoso
+      await this.showAlert('Éxito', 'Inicio de sesión exitoso');
       this.router.navigate(['/home']);
     } else {
-      // Mostrar un mensaje de error o manejar el error de autenticación
-      console.log('Usuario o contraseña incorrectos');
+      // Usuario o contraseña incorrectos
+      await this.showAlert('Error', 'Usuario o contraseña incorrectos');
     }
+  }
+
+  // Función para mostrar alertas
+  async showAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header: header,
+      message: message,
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 
   navigateToRegister() {
     this.router.navigate(['/registro']); // Redirige a la página de registro
   }
 }
-

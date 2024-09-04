@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./configuracion.page.scss'],
 })
 export class ConfiguracionPage implements OnInit {
+  darkMode: boolean = false;
 
   constructor() { }
 
@@ -14,13 +15,13 @@ export class ConfiguracionPage implements OnInit {
   }
 
   toggleTheme(event: any) {
-    const isDarkMode = event.detail.checked;
-    if (isDarkMode) {
+    this.darkMode = event.detail.checked;
+    if (this.darkMode) {
       document.documentElement.setAttribute('data-theme', 'dark');
     } else {
       document.documentElement.removeAttribute('data-theme');
     }
-    this.saveTheme(isDarkMode);
+    this.saveTheme(this.darkMode);
   }
 
   private saveTheme(isDarkMode: boolean) {
@@ -30,8 +31,10 @@ export class ConfiguracionPage implements OnInit {
   private loadTheme() {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark') {
+      this.darkMode = true;
       document.documentElement.setAttribute('data-theme', 'dark');
     } else {
+      this.darkMode = false;
       document.documentElement.removeAttribute('data-theme');
     }
   }

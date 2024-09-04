@@ -1,7 +1,4 @@
-.my-custom-menu {
-  --background: var(--ion-color-light);
-  animation: slideIn 000.3s ease-out; /* Animación de deslizamiento más rápida */
-}
+
 
 @keyframes slideIn {
   0% {
@@ -33,14 +30,5 @@ ion-footer {
   margin-top: auto; /* Asegura que el footer se empuje al final del contenedor */
 }
 
-/* Ajustes de velocidad para animaciones */
-.animate__animated {
-  --animate-duration: 000.2s; /* Hace que las animaciones sean más rápidas */
-}
-
-.animate__fadeInLeft,
-.animate__fadeInUp {
-  animation-duration: 000.2s !important; /* Acelera la animación a 0.3 segundos */
-}
 
 
