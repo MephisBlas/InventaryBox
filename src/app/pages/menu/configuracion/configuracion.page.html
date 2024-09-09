@@ -1,6 +1,15 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button> <!-- Botón de retroceso -->
+    </ion-buttons>
     <ion-title>Configuración</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="goToMainMenu()">
+        <ion-icon name="arrow-back"></ion-icon>
+        Menú Principal
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
