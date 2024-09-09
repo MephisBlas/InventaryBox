@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Agregar Producto</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+  <div class="container">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Formulario de Producto</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+          <!-- Nombre del Producto -->
+          <ion-item>
+            <ion-label position="floating">Nombre del Producto</ion-label>
+            <ion-input formControlName="nombre" type="text"></ion-input>
+          </ion-item>
+
+          <!-- Clase del Producto -->
+          <ion-item>
+            <ion-label>Clase</ion-label>
+            <ion-select formControlName="clase">
+              <ion-select-option value="electrodomestico">Electrodoméstico</ion-select-option>
+              <ion-select-option value="muebles">Muebles</ion-select-option>
+              <ion-select-option value="menaje_hogar">Menaje Hogar</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <!-- Precio -->
+          <ion-item>
+            <ion-label position="floating">Precio</ion-label>
+            <ion-input formControlName="precio" type="number"></ion-input>
+          </ion-item>
+
+          <!-- Cantidad en Stock -->
+          <ion-item>
+            <ion-label position="floating">Cantidad Stock</ion-label>
+            <ion-input formControlName="cantidad" type="number"></ion-input>
+          </ion-item>
+
+          <!-- Botón para Enviar el Formulario -->
+          <ion-button expand="full" type="submit" [disabled]="!productForm.valid">Agregar Producto</ion-button>
+        </form>
+      </ion-card-content>
+    </ion-card>
+  </div>

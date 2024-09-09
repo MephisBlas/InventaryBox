@@ -30,5 +30,19 @@ ion-footer {
   margin-top: auto; /* Asegura que el footer se empuje al final del contenedor */
 }
 
+/* Personalizar el botón flotante */
+ion-fab-button {
+  background-color: #3880ff; /* Color del botón */
+  color: white; /* Color del ícono */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para el botón */
+}
+
+ion-fab-button:hover {
+  background-color: #3171e0; /* Color del botón al pasar el cursor */
+}
+
+ion-fab-button:active {
+  background-color: #1e60c4; /* Color del botón cuando se presiona */
+}
 
 
