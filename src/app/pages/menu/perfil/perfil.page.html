@@ -1,56 +1,32 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <app-back-arrow></app-back-arrow>
+    </ion-buttons>
     <ion-title>Perfil</ion-title>
   </ion-toolbar>
 </ion-header>
 
 
-  <div class="perfil-container ion-padding">
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>Cambiar Contraseña</ion-card-title>
-      </ion-card-header>
 
-      <ion-card-content>
-        <form (ngSubmit)="changePassword()" #changePasswordForm="ngForm">
-          <!-- Contraseña Actual -->
-          <ion-item>
-            <ion-label position="floating">Contraseña Actual</ion-label>
-            <ion-input 
-              type="password" 
-              [(ngModel)]="user.currentPassword" 
-              name="currentPassword" 
-              required>
-            </ion-input>
-          </ion-item>
+<ion-content class="card-container">
+  <ion-card (click)="navigateToChangeName()" class="card-item">
+    <ion-card-header>
+      <ion-card-title>Cambiar Nombre</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Aquí puedes cambiar tu nombre de usuario.
+    </ion-card-content>
+  </ion-card>
 
-          <!-- Nueva Contraseña -->
-          <ion-item>
-            <ion-label position="floating">Nueva Contraseña</ion-label>
-            <ion-input 
-              type="password" 
-              [(ngModel)]="user.newPassword" 
-              name="newPassword" 
-              required>
-            </ion-input>
-          </ion-item>
+  <ion-card (click)="navigateToChangePassword()" class="card-item">
+    <ion-card-header>
+      <ion-card-title>Cambiar Contraseña</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Aquí puedes cambiar tu contraseña.
+    </ion-card-content>
+  </ion-card>
+</ion-content>
 
-          <!-- Confirmar Nueva Contraseña -->
-          <ion-item>
-            <ion-label position="floating">Confirmar Nueva Contraseña</ion-label>
-            <ion-input 
-              type="password" 
-              [(ngModel)]="user.confirmNewPassword" 
-              name="confirmNewPassword" 
-              required>
-            </ion-input>
-          </ion-item>
 
-          <!-- Botón de Guardar -->
-          <div class="perfil-actions">
-            <ion-button expand="block" color="primary" type="submit">Guardar Cambios</ion-button>
-          </div>
-        </form>
-      </ion-card-content>
-    </ion-card>
-  </div>

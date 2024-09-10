@@ -39,9 +39,16 @@
 
 
 /* Tema claro */
+/* Estilos básicos */
 :root {
   --ion-background-color: #ffffff;
   --ion-text-color: #000000;
+  --ion-border-color: #e0e0e0;
+  --ion-button-bg: #3880ff;
+  --ion-button-color: #ffffff;
+  --ion-header-bg: #f8f8f8;
+  --ion-card-bg: #ffffff;
+  --ion-card-border: #dcdcdc;
   --background-image: url('/assets/images/background-light.png'); /* Imagen de fondo para tema claro */
 }
 
@@ -49,7 +56,12 @@
 [data-theme='dark'] {
   --ion-background-color: #000000;
   --ion-text-color: #ffffff;
-  --ion-icon-color:#ffff;  
+  --ion-border-color: #333333;
+  --ion-button-bg: #4c8cff;
+  --ion-button-color: #ffffff;
+  --ion-header-bg: #1c1c1c;
+  --ion-card-bg: #1f1f1f;
+  --ion-card-border: #444444;
   --background-image: url('/assets/images/background-dark.png'); /* Imagen de fondo para tema oscuro */
 }
 
@@ -59,5 +71,48 @@ body {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+  color: var(--ion-text-color);
+}
 
+/* General */
+ion-content {
+  --background: var(--ion-background-color);
+  color: var(--ion-text-color);
+}
+
+/* Encabezado */
+ion-header {
+  background: var(--ion-header-bg);
+  color: var(--ion-text-color);
+}
+
+ion-toolbar {
+  border-bottom: 1px solid var(--ion-border-color);
+}
+
+
+/* Botones */
+ion-button {
+  background: var(--ion-button-bg);
+  color: var(--ion-button-color);
+}
+
+ion-button[disabled] {
+  background: var(--ion-border-color);
+  color: var(--ion-text-color);
+}
+
+
+ion-item {
+  --border-color: var(--ion-border-color);
+}
+
+/* Iconos */
+ion-icon {
+  color: var(--ion-text-color);
+}
+
+/* Contenido */
+.container {
+  padding: 16px;
 }

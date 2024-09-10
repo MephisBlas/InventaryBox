@@ -1,24 +1,19 @@
 @import '~animate.css/animate.min.css'; // Asegúrate de tener Animate.css instalado
-ion-content {
-    --background: transparent; /* Asegura que el ion-content no tape el fondo */
-  }
 
 /* Centrar el contenedor en el centro de la página */
-.container {
+.perfil-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  padding: 20px;
+  background: transparent;
+ 
 }
 
-/* Estilo para el ion-card */
-ion-card {
-  width: 100%;
-  max-width: 600px;
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
+/* Animación de entrada del ion-card */
+.ion-card {
+  width: 90%;
+  max-width: 500px;
   animation: fadeInUp 1s ease-out;
 }
 
@@ -34,7 +29,7 @@ ion-item {
 }
 
 /* Animación para el botón de guardar */
-ion-button {
+.perfil-actions ion-button {
   animation: zoomIn 0.8s ease-out;
 }
 

@@ -16,7 +16,7 @@ export class LoginPage implements OnInit {
   constructor(private router: Router, private alertController: AlertController) {}
 
   ngOnInit() {
-    // Inicialización si es necesaria
+    // Cualquier inicialización adicional si es necesaria
   }
 
   async login() {
@@ -28,7 +28,7 @@ export class LoginPage implements OnInit {
 
     // Recuperar usuarios almacenados en localStorage
     const storedUsers = JSON.parse(localStorage.getItem('users') || '[]');
-    
+
     // Depuración: Verifica los datos almacenados
     console.log('Usuarios almacenados:', storedUsers);
 
@@ -36,14 +36,17 @@ export class LoginPage implements OnInit {
     const foundUser = storedUsers.find((u: any) => u.username === this.user.username && u.password === this.user.password);
 
     if (foundUser) {
-      // Inicio de sesión exitoso
-      await this.showAlert('Éxito', 'Inicio de sesión exitoso');
-      this.router.navigate(['/home']);
-    } else {
-      // Usuario o contraseña incorrectos
-      await this.showAlert('Error', 'Usuario o contraseña incorrectos');
-    }
-  }
+      // Guardar información del usuario en localStorage para mantener la sesión
+      localStorage.setItem('loggedInUser', JSON.stringify(foundUser));
+      
+         // Inicio de sesión exitoso
+         await this.showAlert('Éxito', `Inicio de sesión exitoso. Bienvenido, ${foundUser.username}`);
+         this.router.navigate(['/home']);
+       } else {
+         // Usuario o contraseña incorrectos
+         await this.showAlert('Error', 'Usuario o contraseña incorrectos');
+       }
+     }
 
   // Función para mostrar alertas
   async showAlert(header: string, message: string) {

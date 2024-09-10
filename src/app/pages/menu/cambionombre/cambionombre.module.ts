@@ -4,20 +4,19 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { PerfilPageRoutingModule } from './perfil-routing.module';
+import { CambionombrePageRoutingModule } from './cambionombre-routing.module';
 
-import { PerfilPage } from './perfil.page';
+import { CambionombrePage } from './cambionombre.page';
 import { SharedModule } from 'src/app/shared/shared.module';
-
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    PerfilPageRoutingModule,
+    CambionombrePageRoutingModule,
     SharedModule 
   ],
-  declarations: [PerfilPage, ]
+  declarations: [CambionombrePage, ]
 })
-export class PerfilPageModule {}
+export class CambionombrePageModule {}

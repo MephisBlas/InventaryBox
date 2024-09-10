@@ -10,6 +10,8 @@ import { AuthService } from 'src/app/services/auth.service'; // Verifica que est
 })
 export class HomePage implements OnInit {
   isDarkMode = false; // Variable para controlar el estado del tema
+  username: string = ''; // Agregar propiedad para el nombre de usuario
+  products: any[] = []; // Lista de productos
 
   constructor(
     private menuCtrl: MenuController,
@@ -19,6 +21,29 @@ export class HomePage implements OnInit {
 
   ngOnInit() {
     this.setInitialTheme(); // Establece el tema inicial basado en las preferencias del sistema o almacenamiento local
+    this.loadUser(); // Cargar el nombre del usuario al iniciar
+    this.loadProducts(); // Cargar productos desde localStorage
+  }
+
+  // Método para cargar el nombre del usuario desde el almacenamiento local
+  private loadUser() {
+    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser') || '{}');
+
+    if (loggedInUser && loggedInUser.username) {
+      this.username = loggedInUser.username;
+    } else {
+      this.router.navigate(['/login']); // Redirige al usuario a la página de inicio de sesión si no hay usuario
+    }
+  }
+
+  // Método para cargar productos desde localStorage
+  private loadProducts() {
+    this.products = JSON.parse(localStorage.getItem('products') || '[]');
+  }
+
+  // Método para navegar a la página de registro de productos
+  navigateToRegistroProducto() {
+    this.router.navigate(['/registroproducto']);
   }
 
   // Método para cambiar el tema
@@ -56,8 +81,8 @@ export class HomePage implements OnInit {
   }
 
   // Método para cerrar sesión
-  logout() {
-    this.authService.logout(); // Llama al método de cierre de sesión del servicio
+  async logout() {
+    await this.authService.logout(); // Llama al método de cierre de sesión del servicio y espera su resolución
     this.closeMenu(); // Cierra el menú
     this.router.navigate(['/login']); // Redirige al usuario a la página de inicio de sesión
   }

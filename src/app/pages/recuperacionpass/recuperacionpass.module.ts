@@ -7,14 +7,17 @@ import { IonicModule } from '@ionic/angular';
 import { RecuperacionpassPageRoutingModule } from './recuperacionpass-routing.module';
 
 import { RecuperacionpassPage } from './recuperacionpass.page';
+import { SharedModule } from 'src/app/shared/shared.module';
+
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    RecuperacionpassPageRoutingModule
+    RecuperacionpassPageRoutingModule,
+    SharedModule 
   ],
-  declarations: [RecuperacionpassPage]
+  declarations: [RecuperacionpassPage, ]
 })
 export class RecuperacionpassPageModule {}

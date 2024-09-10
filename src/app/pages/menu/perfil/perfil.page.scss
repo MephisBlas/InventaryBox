@@ -1,84 +1,23 @@
-@import '~animate.css/animate.min.css'; // Asegúrate de tener Animate.css instalado
+ion-content {
+  --background: transparent; /* Asegura que el ion-content no tape el fondo */
+}
 
-/* Centrar el contenedor en el centro de la página */
-.perfil-container {
+.card-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
- 
+  flex-direction: column;
+  align-items: center; /* Centra las tarjetas horizontalmente */
+  padding: 20px; /* Agrega un poco de padding alrededor del contenido */
 }
 
-/* Animación de entrada del ion-card */
-.ion-card {
-  width: 90%;
-  max-width: 500px;
-  animation: fadeInUp 1s ease-out;
+.card-item {
+  width: 100%; /* Ocupa el 100% del ancho del contenedor, ajustable */
+  max-width: 400px; /* Ajusta el ancho máximo de la tarjeta */
+  margin-bottom: 15px; /* Espaciado entre tarjetas */
+  cursor: pointer; /* Cambia el cursor a mano para indicar clic */
+  transition: transform 0.2s ease, box-shadow 0.2s ease; /* Transiciones suaves */
 }
 
-/* Animación de entrada del formulario */
-form {
-  animation: bounceInUp 1s ease-out;
-}
-
-/* Animación para los campos de entrada */
-ion-item {
-  margin-bottom: 16px;
-  animation: fadeInLeft 1s ease-out;
-}
-
-/* Animación para el botón de guardar */
-.perfil-actions ion-button {
-  animation: zoomIn 0.8s ease-out;
-}
-
-/* Animaciones definidas */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes bounceInUp {
-  from {
-    opacity: 0;
-    transform: translateY(100px);
-  }
-  60% {
-    opacity: 1;
-    transform: translateY(-10px);
-  }
-  80% {
-    transform: translateY(5px);
-  }
-  to {
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes zoomIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+.card-item:hover {
+  transform: scale(1.02); /* Escala ligeramente al pasar el ratón */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Añade sombra al pasar el ratón */
 }

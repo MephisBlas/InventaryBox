@@ -1,3 +1,6 @@
+ion-content {
+  --background: transparent; /* Asegura que el ion-content no tape el fondo */
+}
 
 
 @keyframes slideIn {
@@ -10,39 +13,38 @@
     opacity: 1;
   }
 }
-
+/* Asegura que el ion-content no tape el fondo */
 ion-content {
+  --background: transparent; /* Fondo transparente para que el contenido no tape el fondo */
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Asegura que el contenido se distribuya entre la parte superior e inferior */
-  height: 100%;
+  justify-content: space-between; /* Distribuye el contenido entre la parte superior e inferior */
+  height: 100%; /* Asegura que el contenido ocupe toda la altura disponible */
 }
 
+/* Estilo para el menú */
 .menu-content {
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Asegura que los elementos se distribuyan verticalmente */
-  height: 100%;
-  padding: 16px; /* Ajusta el padding si es necesario */
+  justify-content: space-between; /* Distribuye los elementos verticalmente en el menú */
+  height: 100%; /* Asegura que el contenido del menú ocupe toda la altura disponible */
+  padding: 16px; /* Ajusta el padding alrededor del contenido del menú */
 }
 
+/* Asegura que el pie de página se mantenga al final del contenedor */
 ion-footer {
-  margin-top: auto; /* Asegura que el footer se empuje al final del contenedor */
-}
-
-/* Personalizar el botón flotante */
-ion-fab-button {
-  background-color: #3880ff; /* Color del botón */
-  color: white; /* Color del ícono */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para el botón */
-}
-
-ion-fab-button:hover {
-  background-color: #3171e0; /* Color del botón al pasar el cursor */
-}
-
-ion-fab-button:active {
-  background-color: #1e60c4; /* Color del botón cuando se presiona */
+  margin-top: auto; /* Empuja el footer al final del menú */
 }
 
 
+/* Animaciones personalizadas */
+@keyframes slideIn {
+  0% {
+    transform: translateX(-100%); /* Inicia el elemento fuera de la vista en el eje X */
+    opacity: 0; /* Inicia con opacidad 0 */
+  }
+  100% {
+    transform: translateX(0); /* Mueve el elemento a su posición original en el eje X */
+    opacity: 1; /* Finaliza con opacidad 1 */
+  }
+}

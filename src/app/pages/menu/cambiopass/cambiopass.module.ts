@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { PerfilPageRoutingModule } from './perfil-routing.module';
+import { CambiopassPageRoutingModule } from './cambiopass-routing.module';
 
-import { PerfilPage } from './perfil.page';
+import { CambiopassPage } from './cambiopass.page';
 import { SharedModule } from 'src/app/shared/shared.module';
 
 
@@ -15,9 +15,9 @@ import { SharedModule } from 'src/app/shared/shared.module';
     CommonModule,
     FormsModule,
     IonicModule,
-    PerfilPageRoutingModule,
+    CambiopassPageRoutingModule,
     SharedModule 
   ],
-  declarations: [PerfilPage, ]
+  declarations: [CambiopassPage, ]
 })
-export class PerfilPageModule {}
+export class CambiopassPageModule {}

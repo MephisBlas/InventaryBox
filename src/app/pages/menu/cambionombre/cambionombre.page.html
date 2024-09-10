@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <app-back-arrow></app-back-arrow>
+    </ion-buttons>
+    <ion-title>Cambio de nombre</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+
+<div class="perfil-container ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Cambiar Nombre de Usuario</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <form (ngSubmit)="changeName()" #changeNameForm="ngForm">
+        <!-- Contraseña Actual -->
+        <ion-item>
+          <ion-label position="floating">Contraseña Actual</ion-label>
+          <ion-input 
+            type="password" 
+            [(ngModel)]="user.currentPassword" 
+            name="currentPassword" 
+            required>
+          </ion-input>
+        </ion-item>
+
+        <!-- Nuevo Nombre de Usuario -->
+        <ion-item>
+          <ion-label position="floating">Nuevo Nombre de Usuario</ion-label>
+          <ion-input 
+            type="text" 
+            [(ngModel)]="user.newUsername" 
+            name="newUsername" 
+            required>
+          </ion-input>
+        </ion-item>
+
+        <!-- Botón de Guardar -->
+        <div class="perfil-actions">
+          <ion-button expand="block" color="primary" type="submit">Guardar Cambios</ion-button>
+        </div>
+      </form>
+    </ion-card-content>
+  </ion-card>
+</div>
