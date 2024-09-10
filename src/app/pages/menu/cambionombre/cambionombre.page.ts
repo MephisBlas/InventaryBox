@@ -28,9 +28,11 @@ export class CambionombrePage implements OnInit {
 
     // Recuperar usuarios almacenados en localStorage
     const storedUsers = JSON.parse(localStorage.getItem('users') || '[]');
+    console.log('Usuarios almacenados:', storedUsers);
 
     // Buscar el usuario con la contraseña actual
     const userIndex = storedUsers.findIndex((u: any) => u.password === this.user.currentPassword);
+    console.log('Índice del usuario encontrado:', userIndex);
 
     if (userIndex === -1) {
       await this.showAlert('Error', 'Contraseña actual incorrecta.');
@@ -39,6 +41,8 @@ export class CambionombrePage implements OnInit {
 
     // Verificar si el nuevo nombre de usuario ya está en uso
     const usernameExists = storedUsers.some((u: any) => u.username === this.user.newUsername);
+    console.log('Nombre de usuario ya existe:', usernameExists);
+
     if (usernameExists) {
       await this.showAlert('Error', 'El nuevo nombre de usuario ya está en uso.');
       return;
@@ -49,6 +53,7 @@ export class CambionombrePage implements OnInit {
 
     // Guardar la lista actualizada en localStorage
     localStorage.setItem('users', JSON.stringify(storedUsers));
+    console.log('Usuarios actualizados:', storedUsers);
 
     // Limpiar campos
     this.user = { currentPassword: '', newUsername: '' };

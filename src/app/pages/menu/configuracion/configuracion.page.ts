@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NavController } from '@ionic/angular'; // Importa NavController
 
 @Component({
   selector: 'app-configuracion',
@@ -8,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 export class ConfiguracionPage implements OnInit {
   darkMode: boolean = false;
 
-  constructor() { }
+  constructor(private navCtrl: NavController) {} // Inyecta NavController
 
   ngOnInit() {
     this.loadTheme();
@@ -37,5 +38,9 @@ export class ConfiguracionPage implements OnInit {
       this.darkMode = false;
       document.documentElement.removeAttribute('data-theme');
     }
+  }
+
+  goToMainMenu() {
+    this.navCtrl.navigateRoot('/menu-principal'); // Cambia la ruta según sea necesario
   }
 }
