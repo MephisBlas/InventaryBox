@@ -22,15 +22,15 @@ export class HomePage implements OnInit {
   ngOnInit() {
     this.setInitialTheme(); // Establece el tema inicial basado en las preferencias del sistema o almacenamiento local
     this.loadUser(); // Cargar el nombre del usuario al iniciar
-<<<<<<< HEAD
+
   }
 
   // Método que se ejecuta cada vez que la vista va a entrar en foco
   ionViewWillEnter() {
     this.loadProducts(); // Cargar productos desde localStorage cada vez que se entra a la página
-=======
+
     this.loadProducts(); // Cargar productos desde localStorage
->>>>>>> fc71accd61ebca8f13f67c60b3994a8bd6c490ea
+
   }
 
   // Método para cargar el nombre del usuario desde el almacenamiento local
