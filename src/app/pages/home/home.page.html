@@ -44,18 +44,36 @@
   </ion-header>
 
   <!-- Contenido de la página principal -->
+<ion-content>
   <div class="page-content">
     <ion-list>
-      <ion-item *ngFor="let product of products">
-        <ion-label>
-          <h2>{{ product.nombre }}</h2>
-          <p>Clase: {{ product.clase }}</p>
-          <p>Precio: {{ product.precio | currency }}</p>
-          <p>Cantidad: {{ product.cantidad }}</p>
-        </ion-label>
-      </ion-item>
+      <!-- Recorre y muestra cada producto en un ion-card -->
+      <ion-card *ngFor="let product of products">
+        <ion-card-header>
+          <ion-card-title>{{ product.nombre }}</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+          <div class="product-container">
+            <!-- Contenedor para la imagen del producto -->
+            <ion-thumbnail class="product-thumbnail">
+              <img *ngIf="product.imagen" [src]="product.imagen" alt="Imagen del producto" />
+            </ion-thumbnail>
+
+            <!-- Información del producto -->
+            <div class="product-details">
+              <p><strong>Clase:</strong> {{ product.clase }}</p>
+              <p><strong>Marca:</strong> {{ product.marca }}</p>
+              <p><strong>Precio Compra:</strong> {{ product.precioCompra | currency }}</p>
+              <p><strong>Precio Venta:</strong> {{ product.precioVenta | currency }}</p>
+              <p><strong>Cantidad en Stock:</strong> {{ product.cantidad }}</p>
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
     </ion-list>
   </div>
+</ion-content>
 
   <!-- Botón flotante de registro de productos -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">

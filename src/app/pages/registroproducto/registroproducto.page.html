@@ -37,10 +37,16 @@
             <ion-input formControlName="marca" type="text"></ion-input>
           </ion-item>
 
-          <!-- Precio -->
+          <!-- Precio Compra -->
           <ion-item>
-            <ion-label position="floating">Precio</ion-label>
-            <ion-input formControlName="precio" type="number"></ion-input>
+            <ion-label position="floating">Precio Compra</ion-label>
+            <ion-input formControlName="precioCompra" type="number"></ion-input>
+          </ion-item>
+
+          <!-- Precio Venta -->
+          <ion-item>
+            <ion-label position="floating">Precio Venta</ion-label>
+            <ion-input formControlName="precioVenta" type="number"></ion-input>
           </ion-item>
 
           <!-- Cantidad en Stock -->
@@ -49,6 +55,23 @@
             <ion-input formControlName="cantidad" type="number"></ion-input>
           </ion-item>
 
+          <!-- Botón para capturar una foto -->
+          <ion-item>
+            <ion-button expand="full" (click)="takePicture()">Tomar Foto</ion-button>
+          </ion-item>
+
+          <!-- Botón para subir una foto desde la galería -->
+          <ion-item>
+            <ion-button expand="full" (click)="uploadPicture()">Subir Foto desde Galería</ion-button>
+          </ion-item>
+
+          <!-- Mostrar la imagen seleccionada -->
+          <div *ngIf="imageUrl">
+            <ion-item>
+              <img [src]="imageUrl" alt="Imagen del producto" />
+            </ion-item>
+          </div>
+
           <!-- Botón para Enviar el Formulario -->
           <ion-button expand="full" type="submit" [disabled]="!productForm.valid">Agregar Producto</ion-button>
         </form>
@@ -56,3 +79,4 @@
     </ion-card>
   </div>
 </ion-content>
+

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MenuController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service'; // Verifica que esta ruta sea correcta
+import { Product } from 'src/app/models/product.models'; // Importa la interfaz
 
 @Component({
   selector: 'app-home',
@@ -11,7 +12,7 @@ import { AuthService } from 'src/app/services/auth.service'; // Verifica que est
 export class HomePage implements OnInit {
   isDarkMode = false; // Variable para controlar el estado del tema
   username: string = ''; // Agregar propiedad para el nombre de usuario
-  products: any[] = []; // Lista de productos
+  products: Product[] = []; // Lista de productos usando la interfaz Product
 
   constructor(
     private menuCtrl: MenuController,
@@ -22,20 +23,16 @@ export class HomePage implements OnInit {
   ngOnInit() {
     this.setInitialTheme(); // Establece el tema inicial basado en las preferencias del sistema o almacenamiento local
     this.loadUser(); // Cargar el nombre del usuario al iniciar
-
   }
 
   // Método que se ejecuta cada vez que la vista va a entrar en foco
   ionViewWillEnter() {
     this.loadProducts(); // Cargar productos desde localStorage cada vez que se entra a la página
-
-    this.loadProducts(); // Cargar productos desde localStorage
-
   }
 
   // Método para cargar el nombre del usuario desde el almacenamiento local
   private loadUser() {
-    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser') || '{}');
+    const loggedInUser = this.authService.getUser(); // Usa AuthService para obtener el usuario
 
     if (loggedInUser && loggedInUser.username) {
       this.username = loggedInUser.username;
@@ -46,7 +43,11 @@ export class HomePage implements OnInit {
 
   // Método para cargar productos desde localStorage
   private loadProducts() {
-    this.products = JSON.parse(localStorage.getItem('products') || '[]');
+    const loggedInUser = this.authService.getUser(); // Obtiene el usuario autenticado
+    const allProducts: Product[] = JSON.parse(localStorage.getItem('products') || '[]');
+
+    // Filtra los productos para mostrar solo los del usuario autenticado
+    this.products = allProducts.filter((product: Product) => product.userId === loggedInUser.username);
   }
 
   // Método para navegar a la página de registro de productos
