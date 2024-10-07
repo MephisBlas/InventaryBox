@@ -1,0 +1,20 @@
+/* Estilo para el componente app-back-arrow */
+:host {
+  display: inline-flex; /* Asegura que el componente se muestre en línea con otros elementos */
+  align-items: center; /* Centra verticalmente el contenido */
+}
+
+ion-icon {
+  font-size: 24px; /* Ajusta el tamaño del ícono */
+  color: #3880ff; /* Color del ícono */
+  --padding: 0; /* Quita padding alrededor del ícono */
+  background: transparent; /* Fondo transparente */
+}
+
+/* Estilo adicional para asegurarse de que el icono no tenga fondo */
+ion-button {
+  background: transparent; /* Fondo transparente para el botón */
+  --color: #3880ff; /* Color del ícono del botón */
+  --border-radius: 0; /* Quita el radio del borde para evitar bordes redondeados no deseados */
+  --box-shadow: none; /* Quita cualquier sombra que pueda hacer que el botón parezca un cuadrado negro */
+}

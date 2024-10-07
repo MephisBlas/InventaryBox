@@ -7,14 +7,17 @@ import { IonicModule } from '@ionic/angular';
 import { ConfiguracionPageRoutingModule } from './configuracion-routing.module';
 
 import { ConfiguracionPage } from './configuracion.page';
+import { SharedModule } from 'src/app/shared/shared.module';
+
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ConfiguracionPageRoutingModule
+    ConfiguracionPageRoutingModule,
+    SharedModule 
   ],
-  declarations: [ConfiguracionPage]
+  declarations: [ConfiguracionPage, ]
 })
 export class ConfiguracionPageModule {}

@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <app-back-arrow></app-back-arrow>
+    </ion-buttons>
+    <ion-title>Cambio de contraseña</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+
+<div class="perfil-container ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Cambiar Contraseña</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <form (ngSubmit)="changePassword()" #changePasswordForm="ngForm">
+        <!-- Contraseña Actual -->
+        <ion-item>
+          <ion-label position="floating">Contraseña Actual</ion-label>
+          <ion-input 
+            type="password" 
+            [(ngModel)]="user.currentPassword" 
+            name="currentPassword" 
+            required>
+          </ion-input>
+        </ion-item>
+
+        <!-- Nueva Contraseña -->
+        <ion-item>
+          <ion-label position="floating">Nueva Contraseña</ion-label>
+          <ion-input 
+            type="password" 
+            [(ngModel)]="user.newPassword" 
+            name="newPassword" 
+            required>
+          </ion-input>
+        </ion-item>
+
+        <!-- Confirmar Nueva Contraseña -->
+        <ion-item>
+          <ion-label position="floating">Confirmar Nueva Contraseña</ion-label>
+          <ion-input 
+            type="password" 
+            [(ngModel)]="user.confirmNewPassword" 
+            name="confirmNewPassword" 
+            required>
+          </ion-input>
+        </ion-item>
+
+        <!-- Botón de Guardar -->
+        <div class="perfil-actions">
+          <ion-button expand="block" color="primary" type="submit">Guardar Cambios</ion-button>
+        </div>
+      </form>
+    </ion-card-content>
+  </ion-card>
+</div>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NavController } from '@ionic/angular'; // Importa NavController
 
 @Component({
   selector: 'app-configuracion',
@@ -6,21 +7,22 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./configuracion.page.scss'],
 })
 export class ConfiguracionPage implements OnInit {
+  darkMode: boolean = false;
 
-  constructor() { }
+  constructor(private navCtrl: NavController) {} // Inyecta NavController
 
   ngOnInit() {
     this.loadTheme();
   }
 
   toggleTheme(event: any) {
-    const isDarkMode = event.detail.checked;
-    if (isDarkMode) {
+    this.darkMode = event.detail.checked;
+    if (this.darkMode) {
       document.documentElement.setAttribute('data-theme', 'dark');
     } else {
       document.documentElement.removeAttribute('data-theme');
     }
-    this.saveTheme(isDarkMode);
+    this.saveTheme(this.darkMode);
   }
 
   private saveTheme(isDarkMode: boolean) {
@@ -30,9 +32,15 @@ export class ConfiguracionPage implements OnInit {
   private loadTheme() {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark') {
+      this.darkMode = true;
       document.documentElement.setAttribute('data-theme', 'dark');
     } else {
+      this.darkMode = false;
       document.documentElement.removeAttribute('data-theme');
     }
+  }
+
+  goToMainMenu() {
+    this.navCtrl.navigateRoot('/menu-principal'); // Cambia la ruta según sea necesario
   }
 }

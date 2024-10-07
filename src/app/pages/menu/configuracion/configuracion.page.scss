@@ -1,1 +1,49 @@
-
+ion-content {
+    --background: transparent; /* Asegura que el ion-content no tape el fondo */
+  }
+  
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  
+  .theme-toggle-item {
+   
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --inner-padding-end: 0;
+    --inner-padding-start: 0;
+    border-radius: 8px;
+    margin: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 400px;
+    display: flex;
+   
+  }
+  
+  
+  ion-label {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--ion-text-color);
+    margin-right: 12px;
+  }
+  
+  
+  
+  body[data-theme='dark'] ion-item {
+    --background: var(--ion-background-color-dark);
+  }
+  
+  body[data-theme='dark'] ion-label {
+    color: var(--ion-text-color-light);
+  }
+  
+  body[data-theme='dark'] ion-toggle {
+    --background: var(--ion-color-dark);
+    --background-checked: var(--ion-color-light);
+  }
+  

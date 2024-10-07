@@ -1,13 +1,32 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>perfil</ion-title>
+    <ion-buttons slot="start">
+      <app-back-arrow></app-back-arrow>
+    </ion-buttons>
+    <ion-title>Cambiar Contraseña</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">perfil</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <div class="perfil-container">
+    <!-- Tarjeta para cambiar nombre -->
+    <ion-card (click)="navigateToChangeName()" class="card-item">
+      <ion-card-header>
+        <ion-card-title>Cambiar Nombre</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        Aquí puedes cambiar tu nombre de usuario.
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Tarjeta para cambiar contraseña -->
+    <ion-card (click)="navigateToChangePassword()" class="card-item">
+      <ion-card-header>
+        <ion-card-title>Cambiar Contraseña</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        Aquí puedes cambiar tu contraseña.
+      </ion-card-content>
+    </ion-card>
+  </div>
 </ion-content>

@@ -1,29 +1,28 @@
 <ion-menu contentId="main-content" side="start" menuId="first" class="my-custom-menu">
   <ion-header>
     <ion-toolbar>
-      <ion-title>Menú</ion-title>
+      <ion-title>Bienvenido {{ username }}</ion-title>
     </ion-toolbar>
   </ion-header>
 
   <ion-content class="ion-padding">
     <div class="menu-content">
       <!-- Contenido del menú -->
-      <ion-list class="animate__animated animate__fadeInLeft">
-        <ion-item routerLink="/profile" (click)="closeMenu()" class="animate__animated animate__fadeInLeft animate__delay-1s">
+      <ion-list>
+        <ion-item routerLink="/perfil" (click)="closeMenu()">
           <ion-icon slot="start" name="person"></ion-icon>
           <ion-label>Perfil</ion-label>
         </ion-item>
-        <ion-item routerLink="/configuracion" (click)="closeMenu()" class="animate__animated animate__fadeInLeft animate__delay-2s">
+        <ion-item routerLink="/configuracion" (click)="closeMenu()">
           <ion-icon slot="start" name="settings"></ion-icon>
           <ion-label>Configuraciones</ion-label>
         </ion-item>
       </ion-list>
 
       <!-- Botón de Cerrar Sesión al final del menú -->
-      <ion-footer class="ion-no-border animate__animated animate__fadeInUp animate__delay-3s">
+      <ion-footer class="ion-no-border">
         <ion-toolbar>
           <ion-button expand="full" color="danger" (click)="logout()">
-            <ion-icon slot="start" name="log-out"></ion-icon>
             Cerrar Sesión
           </ion-button>
         </ion-toolbar>
@@ -33,15 +32,35 @@
 </ion-menu>
 
 <!-- Contenido principal -->
-<div class="ion-page" id="main-content">
+<ion-content id="main-content">
   <ion-header>
     <ion-toolbar>
       <ion-buttons slot="start">
         <!-- Botón para abrir el menú -->
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
-      <ion-title>Página Principal</ion-title>
+      <ion-title>Lista de productos</ion-title>
     </ion-toolbar>
   </ion-header>
-</div>
 
+  <!-- Contenido de la página principal -->
+  <div class="page-content">
+    <ion-list>
+      <ion-item *ngFor="let product of products">
+        <ion-label>
+          <h2>{{ product.nombre }}</h2>
+          <p>Clase: {{ product.clase }}</p>
+          <p>Precio: {{ product.precio | currency }}</p>
+          <p>Cantidad: {{ product.cantidad }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <!-- Botón flotante de registro de productos -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="primary" (click)="navigateToRegistroProducto()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
