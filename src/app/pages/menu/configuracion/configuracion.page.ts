@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController } from '@ionic/angular'; // Importa NavController
+import { NavController } from '@ionic/angular';
+import { UserService } from 'src/app/services/user.service'; // Asegúrate de importar el UserService
 
 @Component({
   selector: 'app-configuracion',
@@ -9,28 +10,28 @@ import { NavController } from '@ionic/angular'; // Importa NavController
 export class ConfiguracionPage implements OnInit {
   darkMode: boolean = false;
 
-  constructor(private navCtrl: NavController) {} // Inyecta NavController
+  constructor(private navCtrl: NavController, private userService: UserService) {} // Inyecta UserService
 
   ngOnInit() {
     this.loadTheme();
   }
 
-  toggleTheme(event: any) {
+  async toggleTheme(event: any) {
     this.darkMode = event.detail.checked;
     if (this.darkMode) {
       document.documentElement.setAttribute('data-theme', 'dark');
     } else {
       document.documentElement.removeAttribute('data-theme');
     }
-    this.saveTheme(this.darkMode);
+    await this.saveTheme(this.darkMode ? 'dark' : 'light');
   }
 
-  private saveTheme(isDarkMode: boolean) {
-    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+  private async saveTheme(theme: string) {
+    await this.userService.saveTheme(theme);
   }
 
-  private loadTheme() {
-    const savedTheme = localStorage.getItem('theme');
+  private async loadTheme() {
+    const savedTheme = await this.userService.loadTheme();
     if (savedTheme === 'dark') {
       this.darkMode = true;
       document.documentElement.setAttribute('data-theme', 'dark');

@@ -31,8 +31,8 @@ export class LoginPage implements OnInit {
       return;
     }
 
-    // Recuperar usuarios almacenados en localStorage
-    const storedUsers = JSON.parse(localStorage.getItem('users') || '[]');
+    // Recuperar usuarios almacenados en SQLite
+    const storedUsers = await this.authService.getUsers();
 
     // Verificar si hay usuarios almacenados
     if (!storedUsers || storedUsers.length === 0) {

@@ -4,58 +4,56 @@
   </ion-toolbar>
 </ion-header>
 
+<div class="login-container animate__animated animate__fadeIn">
+  <ion-card class="login-card">
+    <ion-card-header>
+      <ion-card-title class="ion-text-center animate__animated animate__bounceInDown">Bienvenido</ion-card-title>
+    </ion-card-header>
 
-  <div class="login-container animate__animated animate__fadeIn">
-    <ion-card class="login-card">
-      <ion-card-header>
-        <ion-card-title class="ion-text-center animate__animated animate__bounceInDown">Bienvenido</ion-card-title>
-      </ion-card-header>
+    <ion-card-content>
+      <!-- Formulario de inicio de sesión -->
+      <form (ngSubmit)="login()" #loginForm="ngForm">
+        <!-- Campo de usuario -->
+        <ion-item class="input-item animate__animated animate__fadeInLeft animate__delay-1s">
+          <ion-label position="floating">Usuario</ion-label>
+          <ion-input 
+            type="text" 
+            [(ngModel)]="user.username" 
+            name="username" 
+            required>
+          </ion-input>
+        </ion-item>
 
-      <ion-card-content>
-        <!-- Formulario de inicio de sesión -->
-        <form (ngSubmit)="login()" #loginForm="ngForm">
-          <!-- Campo de usuario -->
-          <ion-item class="input-item animate__animated animate__fadeInLeft animate__delay-1s">
-            <ion-label position="floating">Usuario</ion-label>
-            <ion-input 
-              type="text" 
-              [(ngModel)]="user.username" 
-              name="username" 
-              required>
-            </ion-input>
-          </ion-item>
+        <!-- Campo de contraseña -->
+        <ion-item class="input-item animate__animated animate__fadeInLeft animate__delay-2s">
+          <ion-label position="floating">Contraseña</ion-label>
+          <ion-input 
+            type="password" 
+            [(ngModel)]="user.password" 
+            name="password" 
+            required>
+          </ion-input>
+        </ion-item>
 
-          <!-- Campo de contraseña -->
-          <ion-item class="input-item animate__animated animate__fadeInLeft animate__delay-2s">
-            <ion-label position="floating">Contraseña</ion-label>
-            <ion-input 
-              type="password" 
-              [(ngModel)]="user.password" 
-              name="password" 
-              required>
-            </ion-input>
-          </ion-item>
-
-          <!-- Botón de inicio de sesión -->
-          <div class="login-actions animate__animated animate__fadeInUp animate__delay-3s">
-            <ion-button expand="block" color="primary" type="submit">Iniciar Sesión</ion-button>
-          </div>
-        </form>
-
-        <!-- Enlace de recuperación de contraseña -->
-        <div class="login-links ion-text-center animate__animated animate__fadeInUp animate__delay-4s">
-          <ion-text>
-            <small><a [routerLink]="['/recuperacionpass']">¿Olvidaste tu contraseña?</a></small>
-          </ion-text>
+        <!-- Botón de inicio de sesión -->
+        <div class="login-actions animate__animated animate__fadeInUp animate__delay-3s">
+          <ion-button expand="block" color="primary" type="submit" [disabled]="!loginForm.form.valid">Iniciar Sesión</ion-button>
         </div>
+      </form>
 
-        <!-- Mensaje y botón para registrar -->
-        <div class="login-links ion-text-center animate__animated animate__fadeInUp animate__delay-4s">
-          <ion-text>
-            <small><a [routerLink]="['/registro']">¿Aún no tienes cuenta? Regístrate</a></small>
-          </ion-text>
-        </div>
-      </ion-card-content>
-    </ion-card>
-  </div>
+      <!-- Enlace de recuperación de contraseña -->
+      <div class="login-links ion-text-center animate__animated animate__fadeInUp animate__delay-4s">
+        <ion-text>
+          <small><a [routerLink]="['/recuperacionpass']">¿Olvidaste tu contraseña?</a></small>
+        </ion-text>
+      </div>
 
+      <!-- Mensaje y botón para registrar -->
+      <div class="login-links ion-text-center animate__animated animate__fadeInUp animate__delay-4s">
+        <ion-text>
+          <small><a [routerLink]="['/registro']">¿Aún no tienes cuenta? Regístrate</a></small>
+        </ion-text>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</div>

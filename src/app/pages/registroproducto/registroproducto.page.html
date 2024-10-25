@@ -18,13 +18,13 @@
           <!-- Nombre del Producto -->
           <ion-item>
             <ion-label position="floating">Nombre del Producto</ion-label>
-            <ion-input formControlName="nombre" type="text"></ion-input>
+            <ion-input formControlName="nombre" type="text" required></ion-input>
           </ion-item>
 
           <!-- Clase del Producto -->
           <ion-item>
             <ion-label>Clase</ion-label>
-            <ion-select formControlName="clase">
+            <ion-select formControlName="clase" required>
               <ion-select-option value="electrodomestico">Electrodoméstico</ion-select-option>
               <ion-select-option value="muebles">Muebles</ion-select-option>
               <ion-select-option value="menaje_hogar">Menaje Hogar</ion-select-option>
@@ -34,42 +34,46 @@
           <!-- Marca del Producto -->
           <ion-item>
             <ion-label position="floating">Marca</ion-label>
-            <ion-input formControlName="marca" type="text"></ion-input>
+            <ion-input formControlName="marca" type="text" required></ion-input>
           </ion-item>
 
           <!-- Precio Compra -->
           <ion-item>
             <ion-label position="floating">Precio Compra</ion-label>
-            <ion-input formControlName="precioCompra" type="number"></ion-input>
+            <ion-input formControlName="precioCompra" type="number" min="0" required></ion-input>
           </ion-item>
 
           <!-- Precio Venta -->
           <ion-item>
             <ion-label position="floating">Precio Venta</ion-label>
-            <ion-input formControlName="precioVenta" type="number"></ion-input>
+            <ion-input formControlName="precioVenta" type="number" min="0" required></ion-input>
           </ion-item>
 
           <!-- Cantidad en Stock -->
           <ion-item>
             <ion-label position="floating">Cantidad Stock</ion-label>
-            <ion-input formControlName="cantidad" type="number"></ion-input>
+            <ion-input formControlName="cantidad" type="number" min="0" required></ion-input>
           </ion-item>
 
           <!-- Botón para capturar una foto -->
           <ion-item>
-            <ion-button expand="full" (click)="takePicture()">Tomar Foto</ion-button>
+            <ion-button expand="full" color="primary" (click)="takePicture()" fill="outline">
+              <ion-icon slot="start" name="camera"></ion-icon>
+              Tomar Foto
+            </ion-button>
           </ion-item>
 
           <!-- Botón para subir una foto desde la galería -->
           <ion-item>
-            <ion-button expand="full" (click)="uploadPicture()">Subir Foto desde Galería</ion-button>
+            <ion-button expand="full" color="secondary" (click)="uploadPicture()" fill="outline">
+              <ion-icon slot="start" name="images"></ion-icon>
+              Subir Foto desde Galería
+            </ion-button>
           </ion-item>
 
           <!-- Mostrar la imagen seleccionada -->
-          <div *ngIf="imageUrl">
-            <ion-item>
-              <img [src]="imageUrl" alt="Imagen del producto" />
-            </ion-item>
+          <div *ngIf="imageUrl" style="text-align: center; margin: 10px 0;">
+            <img [src]="imageUrl" alt="Imagen del producto" style="max-width: 100%; height: auto;" />
           </div>
 
           <!-- Botón para Enviar el Formulario -->
@@ -79,4 +83,3 @@
     </ion-card>
   </div>
 </ion-content>
-

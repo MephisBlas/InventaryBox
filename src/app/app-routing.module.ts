@@ -44,6 +44,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/menu/cambiopass/cambiopass.module').then( m => m.CambiopassPageModule)
   },
   
+  
    
 ];
 

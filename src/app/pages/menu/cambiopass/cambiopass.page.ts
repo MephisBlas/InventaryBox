@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { AuthService } from 'src/app/services/auth.service'; // Asegúrate de importar el AuthService
 
 @Component({
   selector: 'app-cambiopass',
@@ -14,7 +15,11 @@ export class CambiopassPage implements OnInit {
     confirmNewPassword: ''
   };
 
-  constructor(private router: Router, private alertController: AlertController) {}
+  constructor(
+    private router: Router,
+    private alertController: AlertController,
+    private authService: AuthService // Añadir AuthService
+  ) {}
 
   ngOnInit() {
     // Puedes agregar lógica adicional si es necesario
@@ -32,30 +37,25 @@ export class CambiopassPage implements OnInit {
       return;
     }
 
-    // Recuperar usuarios almacenados en localStorage
-    const storedUsers = JSON.parse(localStorage.getItem('users') || '[]');
-
-    // Buscar el usuario autenticado en localStorage
-    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser') || 'null');
+    // Obtener el usuario autenticado
+    const loggedInUser = this.authService.getUser();
 
     if (!loggedInUser) {
       await this.showAlert('Error', 'No se encontró el usuario autenticado.');
       return;
     }
 
-    // Buscar el usuario con la contraseña actual
-    const userIndex = storedUsers.findIndex((u: any) => u.username === loggedInUser.username && u.password === this.user.currentPassword);
+    // Buscar el usuario en la base de datos y verificar la contraseña actual
+    const users = await this.authService.getUsers();
+    const userIndex = users.findIndex((u: any) => u.username === loggedInUser.username && u.password === this.user.currentPassword);
 
     if (userIndex === -1) {
       await this.showAlert('Error', 'Contraseña actual incorrecta.');
       return;
     }
 
-    // Actualizar la contraseña
-    storedUsers[userIndex].password = this.user.newPassword;
-
-    // Guardar la lista actualizada en localStorage
-    localStorage.setItem('users', JSON.stringify(storedUsers));
+    // Actualizar la contraseña en la base de datos
+    await this.authService.updatePassword(users[userIndex].id, this.user.newPassword);
 
     // Limpiar campos
     this.user = { currentPassword: '', newPassword: '', confirmNewPassword: '' };
@@ -63,7 +63,7 @@ export class CambiopassPage implements OnInit {
     // Mostrar mensaje de éxito
     await this.showAlert('Éxito', 'Contraseña cambiada exitosamente.');
 
-    // Redirigir a la página de inicio de sesión
+    // Opcional: Redirigir a la página de inicio de sesión
     this.router.navigate(['/login']);
   }
 

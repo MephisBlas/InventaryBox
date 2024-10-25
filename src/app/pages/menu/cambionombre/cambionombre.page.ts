@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { AuthService } from 'src/app/services/auth.service'; // Asegúrate de importar tu AuthService
 
 @Component({
   selector: 'app-cambionombre',
@@ -13,7 +14,11 @@ export class CambionombrePage implements OnInit {
     newUsername: ''
   };
 
-  constructor(private router: Router, private alertController: AlertController) {}
+  constructor(
+    private router: Router, 
+    private alertController: AlertController,
+    private authService: AuthService // Inyecta AuthService
+  ) {}
 
   ngOnInit() {
     // Inicialización si es necesaria
@@ -26,15 +31,15 @@ export class CambionombrePage implements OnInit {
       return;
     }
 
-    // Recuperar usuarios almacenados en localStorage
-    const storedUsers = JSON.parse(localStorage.getItem('users') || '[]');
+    // Recuperar usuarios almacenados en SQLite
+    const storedUsers = await this.authService.getUsers();
     console.log('Usuarios almacenados:', storedUsers);
 
     // Buscar el usuario con la contraseña actual
-    const userIndex = storedUsers.findIndex((u: any) => u.password === this.user.currentPassword);
-    console.log('Índice del usuario encontrado:', userIndex);
+    const foundUser = storedUsers.find((u: any) => u.password === this.user.currentPassword);
+    console.log('Usuario encontrado:', foundUser);
 
-    if (userIndex === -1) {
+    if (!foundUser) {
       await this.showAlert('Error', 'Contraseña actual incorrecta.');
       return;
     }
@@ -48,21 +53,14 @@ export class CambionombrePage implements OnInit {
       return;
     }
 
-    // Actualizar el nombre de usuario
-    storedUsers[userIndex].username = this.user.newUsername;
-
-    // Guardar la lista actualizada en localStorage
-    localStorage.setItem('users', JSON.stringify(storedUsers));
-    console.log('Usuarios actualizados:', storedUsers);
+    // Actualizar el nombre de usuario en SQLite
+    await this.authService.updateUsername(foundUser.id, this.user.newUsername);
 
     // Limpiar campos
     this.user = { currentPassword: '', newUsername: '' };
 
     // Mostrar mensaje de éxito
     await this.showAlert('Éxito', 'Nombre de usuario cambiado exitosamente.');
-
-    // Opcional: Actualizar la sesión activa si se usa un servicio de autenticación
-    // this.authService.updateUserName(this.user.newUsername);
 
     // Redirigir al inicio de sesión para que el usuario inicie sesión con el nuevo nombre
     this.router.navigate(['/login']);

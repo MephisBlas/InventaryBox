@@ -44,41 +44,41 @@
   </ion-header>
 
   <!-- Contenido de la página principal -->
-<ion-content>
-  <div class="page-content">
-    <ion-list>
-      <!-- Recorre y muestra cada producto en un ion-card -->
-      <ion-card *ngFor="let product of products">
-        <ion-card-header>
-          <ion-card-title>{{ product.nombre }}</ion-card-title>
-        </ion-card-header>
+  <div class="page-content ion-padding">
+    <div *ngIf="productos.length > 0; else noProducts">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="6" *ngFor="let producto of productos">
+            <ion-card>
+              <img *ngIf="producto.imagen" [src]="producto.imagen" alt="{{ producto.nombre }}" />
+              <ion-card-header>
+                <ion-card-title>{{ producto.nombre }}</ion-card-title>
+                <ion-card-subtitle>{{ producto.clase }}</ion-card-subtitle>
+              </ion-card-header>
+              <ion-card-content>
+                <p><strong>Marca:</strong> {{ producto.marca }}</p>
+                <p><strong>Precio de Compra:</strong> {{ producto.precioCompra | currency }}</p>
+                <p><strong>Precio de Venta:</strong> {{ producto.precioVenta | currency }}</p>
+                <p><strong>Cantidad:</strong> {{ producto.cantidad }}</p>
+              </ion-card-content>
+              <ion-button color="danger" (click)="eliminarProducto(producto)">
+                Eliminar
+              </ion-button>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
 
-        <ion-card-content>
-          <div class="product-container">
-            <!-- Contenedor para la imagen del producto -->
-            <ion-thumbnail class="product-thumbnail">
-              <img *ngIf="product.imagen" [src]="product.imagen" alt="Imagen del producto" />
-            </ion-thumbnail>
+    <ng-template #noProducts>
+      <p>No hay productos registrados.</p>
+    </ng-template>
 
-            <!-- Información del producto -->
-            <div class="product-details">
-              <p><strong>Clase:</strong> {{ product.clase }}</p>
-              <p><strong>Marca:</strong> {{ product.marca }}</p>
-              <p><strong>Precio Compra:</strong> {{ product.precioCompra | currency }}</p>
-              <p><strong>Precio Venta:</strong> {{ product.precioVenta | currency }}</p>
-              <p><strong>Cantidad en Stock:</strong> {{ product.cantidad }}</p>
-            </div>
-          </div>
-        </ion-card-content>
-      </ion-card>
-    </ion-list>
+    <!-- Botón flotante de registro de productos -->
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button color="primary" (click)="irARegistrarProducto()">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
   </div>
-</ion-content>
-
-  <!-- Botón flotante de registro de productos -->
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button color="primary" (click)="navigateToRegistroProducto()">
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
 </ion-content>

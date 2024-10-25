@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/services/auth.service'; // Verifica que esta ruta sea correcta
-import { Product } from 'src/app/models/product.models'; // Importa la interfaz
+import { AuthService } from 'src/app/services/auth.service'; // Asegúrate de que esta ruta sea correcta
+import { UserService } from 'src/app/services/user.service'; // Importa el UserService
+import { Product } from 'src/app/models/product.models'; // Asegúrate de que esta ruta sea correcta
 
 @Component({
   selector: 'app-home',
@@ -11,48 +12,45 @@ import { Product } from 'src/app/models/product.models'; // Importa la interfaz
 })
 export class HomePage implements OnInit {
   isDarkMode = false; // Variable para controlar el estado del tema
-  username: string = ''; // Agregar propiedad para el nombre de usuario
-  products: Product[] = []; // Lista de productos usando la interfaz Product
+  username: string = ''; // Propiedad para el nombre de usuario
+  productos: Product[] = []; // Lista de productos
 
   constructor(
     private menuCtrl: MenuController,
     private authService: AuthService,
+    private userService: UserService, // Inyecta UserService
     private router: Router
   ) {}
 
   ngOnInit() {
-    this.setInitialTheme(); // Establece el tema inicial basado en las preferencias del sistema o almacenamiento local
-    this.loadUser(); // Cargar el nombre del usuario al iniciar
-  }
-
-  // Método que se ejecuta cada vez que la vista va a entrar en foco
-  ionViewWillEnter() {
-    this.loadProducts(); // Cargar productos desde localStorage cada vez que se entra a la página
+    this.setInitialTheme(); // Establece el tema inicial
+    this.loadUser(); // Carga el nombre del usuario
+    this.cargarProductos(); // Carga los productos
   }
 
   // Método para cargar el nombre del usuario desde el almacenamiento local
   private loadUser() {
-    const loggedInUser = this.authService.getUser(); // Usa AuthService para obtener el usuario
+    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser') || '{}');
 
     if (loggedInUser && loggedInUser.username) {
       this.username = loggedInUser.username;
     } else {
-      this.router.navigate(['/login']); // Redirige al usuario a la página de inicio de sesión si no hay usuario
+      this.router.navigate(['/login']); // Redirige al usuario a la página de inicio de sesión
     }
   }
 
-  // Método para cargar productos desde localStorage
-  private loadProducts() {
-    const loggedInUser = this.authService.getUser(); // Obtiene el usuario autenticado
-    const allProducts: Product[] = JSON.parse(localStorage.getItem('products') || '[]');
-
-    // Filtra los productos para mostrar solo los del usuario autenticado
-    this.products = allProducts.filter((product: Product) => product.userId === loggedInUser.username);
+  // Método para cargar los productos
+  async cargarProductos() {
+    try {
+      this.productos = await this.userService.getProducts(); // Carga los productos desde el servicio
+    } catch (error) {
+      console.error('Error al cargar los productos:', error);
+    }
   }
 
   // Método para navegar a la página de registro de productos
-  navigateToRegistroProducto() {
-    this.router.navigate(['/registroproducto']);
+  irARegistrarProducto() {
+    this.router.navigate(['/registroproducto']); // Navega a la página de registro
   }
 
   // Método para cambiar el tema
@@ -73,13 +71,13 @@ export class HomePage implements OnInit {
     localStorage.setItem('theme', isDark ? 'dark' : 'light'); // Guarda el tema en el almacenamiento local
   }
 
-  // Método para establecer el tema inicial basado en las preferencias del sistema o almacenamiento local
+  // Método para establecer el tema inicial
   private setInitialTheme() {
     const savedTheme = localStorage.getItem('theme'); // Obtener el tema guardado
     if (savedTheme) {
       this.isDarkMode = savedTheme === 'dark';
     } else {
-      this.isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches; // Usar la preferencia del sistema si no hay tema guardado
+      this.isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches; // Usar la preferencia del sistema
     }
     this.applyTheme(this.isDarkMode); // Aplica el tema
   }
@@ -91,8 +89,28 @@ export class HomePage implements OnInit {
 
   // Método para cerrar sesión
   async logout() {
-    await this.authService.logout(); // Llama al método de cierre de sesión del servicio y espera su resolución
+    await this.authService.logout(); // Llama al método de cierre de sesión
     this.closeMenu(); // Cierra el menú
     this.router.navigate(['/login']); // Redirige al usuario a la página de inicio de sesión
   }
+
+  //borrar producto
+  async eliminarProducto(producto: Product): Promise<void> {
+    if (!producto || producto.id === undefined) {
+      console.error('Producto inválido:', producto);
+      return; // Salir si el producto es nulo o no tiene un id
+    }
+  
+    if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
+      try {
+        await this.userService.deleteProduct(producto.id);
+        this.cargarProductos(); // Recargar la lista de productos
+      } catch (error) {
+        console.error('Error al eliminar el producto:', error);
+      }
+    }
+  }
+  
+  
+  
 }

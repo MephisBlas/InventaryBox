@@ -1,90 +1,101 @@
-@import '~animate.css/animate.min.css'; // Asegúrate de tener Animate.css instalado
+@import '~animate.css/animate.min.css'; /* Asegúrate de tener Animate.css instalado */
+
 ion-content {
     --background: transparent; /* Asegura que el ion-content no tape el fondo */
-  }
+}
 
 /* Centrar el contenedor en el centro de la página */
 .container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
 }
 
 /* Estilo para el ion-card */
 ion-card {
-  width: 100%;
-  max-width: 600px;
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
-  animation: fadeInUp 1s ease-out;
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    animation: fadeInUp 1s ease-out;
 }
 
 /* Animación de entrada del formulario */
 form {
-  animation: bounceInUp 1s ease-out;
+    animation: bounceInUp 1s ease-out;
 }
 
 /* Animación para los campos de entrada */
 ion-item {
-  margin-bottom: 16px;
-  animation: fadeInLeft 1s ease-out;
+    margin-bottom: 16px;
+    animation: fadeInLeft 1s ease-out;
 }
 
 /* Animación para el botón de guardar */
 ion-button {
-  animation: zoomIn 0.8s ease-out;
+    animation: zoomIn 0.8s ease-out;
 }
 
 /* Animaciones definidas */
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @keyframes bounceInUp {
-  from {
-    opacity: 0;
-    transform: translateY(100px);
-  }
-  60% {
-    opacity: 1;
-    transform: translateY(-10px);
-  }
-  80% {
-    transform: translateY(5px);
-  }
-  to {
-    transform: translateY(0);
-  }
+    from {
+        opacity: 0;
+        transform: translateY(100px);
+    }
+    60% {
+        opacity: 1;
+        transform: translateY(-10px);
+    }
+    80% {
+        transform: translateY(5px);
+    }
+    to {
+        transform: translateY(0);
+    }
 }
 
 @keyframes fadeInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 @keyframes zoomIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Asegura que el ion-button tenga una transición suave */
+ion-button {
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+/* Efecto de hover en el botón */
+ion-button:hover {
+    transform: scale(1.05);
 }

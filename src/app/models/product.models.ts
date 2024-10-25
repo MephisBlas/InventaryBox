@@ -1,13 +1,12 @@
 
-
 export interface Product {
-    nombre: string;
-    clase: string;
-    marca: string;
-    precioCompra: number;
-    precioVenta: number;
-    cantidad: number;
-    imagen?: string; // Opcional, si no siempre se proporciona
-    userId: string; // El ID del usuario que creó el producto
-  }
-  
+  id?: number; // ID único del producto (opcional para que no sea necesario al crear uno nuevo)
+  nombre: string; // Nombre del producto
+  clase: string; // Clase o categoría del producto
+  marca: string; // Marca del producto
+  precioCompra: number; // Precio al que se compró el producto
+  precioVenta: number; // Precio al que se venderá el producto
+  cantidad: number; // Cantidad disponible en stock
+  imagen?: string; // Ruta de la imagen (opcional)
+  userId: string; // ID del usuario que creó el producto
+}

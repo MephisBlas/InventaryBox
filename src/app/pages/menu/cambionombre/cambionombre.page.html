@@ -3,11 +3,9 @@
     <ion-buttons slot="start">
       <app-back-arrow></app-back-arrow>
     </ion-buttons>
-    <ion-title>Cambio de nombre</ion-title>
+    <ion-title>Cambio de Nombre</ion-title>
   </ion-toolbar>
 </ion-header>
-
-
 
 <div class="perfil-container ion-padding">
   <ion-card>
@@ -41,7 +39,7 @@
 
         <!-- Botón de Guardar -->
         <div class="perfil-actions">
-          <ion-button expand="block" color="primary" type="submit">Guardar Cambios</ion-button>
+          <ion-button expand="block" color="primary" type="submit" [disabled]="!changeNameForm.valid">Guardar Cambios</ion-button>
         </div>
       </form>
     </ion-card-content>
