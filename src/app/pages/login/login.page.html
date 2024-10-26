@@ -11,7 +11,6 @@
     </ion-card-header>
 
     <ion-card-content>
-      <!-- Formulario de inicio de sesión -->
       <form (ngSubmit)="login()" #loginForm="ngForm">
         <!-- Campo de usuario -->
         <ion-item class="input-item animate__animated animate__fadeInLeft animate__delay-1s">
@@ -28,11 +27,14 @@
         <ion-item class="input-item animate__animated animate__fadeInLeft animate__delay-2s">
           <ion-label position="floating">Contraseña</ion-label>
           <ion-input 
-            type="password" 
+            [type]="showPassword ? 'text' : 'password'" 
             [(ngModel)]="user.password" 
             name="password" 
             required>
           </ion-input>
+          <ion-button slot="end" (click)="showPassword = !showPassword">
+            <ion-icon [name]="showPassword ? 'eye-off' : 'eye'"></ion-icon>
+          </ion-button>
         </ion-item>
 
         <!-- Botón de inicio de sesión -->

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
-
+import { EmailComposer } from '@ionic-native/email-composer/ngx';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SQLite } from '@ionic-native/sqlite/ngx';
 import { AppComponent } from './app.component';
@@ -16,10 +16,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms'; // Importa Fo
     AppRoutingModule,
     FormsModule, // Añade esto
     ReactiveFormsModule, // Puedes dejar esto si planeas usar formularios reactivos
+
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    SQLite,
+    SQLite,EmailComposer,
   ],
   bootstrap: [AppComponent],
 })

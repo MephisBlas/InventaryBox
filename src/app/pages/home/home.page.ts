@@ -62,8 +62,6 @@ export class HomePage implements OnInit, OnDestroy {
       console.error('ID de producto inválido:', productId);
     }
   }
-  
-  
 
   toggleTheme(event: CustomEvent) {
     this.isDarkMode = event.detail.checked;
@@ -119,6 +117,7 @@ export class HomePage implements OnInit, OnDestroy {
 
     if (producto.cantidad > 0) {
       producto.cantidad--;
+      producto.ventas = (producto.ventas || 0) + 1; // Incrementar las ventas
       try {
         await this.userService.updateProduct(producto.id, producto);
         this.showToast(`Has vendido 1 ${producto.nombre}.`);

@@ -7,12 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-
-
-
 <ion-content [fullscreen]="true" class="recover-container">
- 
-
   <!-- Contenedor de recuperación de contraseña -->
   <div class="recover-card animate__animated animate__fadeIn animate__delay-2s">
     <ion-card>
@@ -20,16 +15,21 @@
         <ion-card-title class="ion-text-center">Recupera tu Contraseña</ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <!-- Campo de correo electrónico -->
-        <ion-item>
-          <ion-label position="floating">Correo Electrónico</ion-label>
-          <ion-input type="email" placeholder=""></ion-input>
-        </ion-item>
+        <form [formGroup]="recoveryForm" (ngSubmit)="recoverPassword()">
+          <!-- Campo de correo electrónico -->
+          <ion-item>
+            <ion-label position="floating">Correo Electrónico</ion-label>
+            <ion-input type="email" formControlName="email" placeholder=""></ion-input>
+          </ion-item>
+          <div *ngIf="recoveryForm.get('email')?.invalid && (recoveryForm.get('email')?.touched || recoveryForm.get('email')?.dirty)">
+            <ion-text color="danger">Por favor, ingresa un correo electrónico válido.</ion-text>
+          </div>
 
-        <!-- Botón de recuperar contraseña -->
-        <div class="recover-actions ion-text-center animate__animated animate__fadeInUp animate__delay-3s">
-          <ion-button expand="block" color="primary" (click)="recoverPassword()">Recuperar Contraseña</ion-button>
-        </div>
+          <!-- Botón de recuperar contraseña -->
+          <div class="recover-actions ion-text-center animate__animated animate__fadeInUp animate__delay-3s">
+            <ion-button expand="block" color="primary" type="submit" [disabled]="recoveryForm.invalid">Recuperar Contraseña</ion-button>
+          </div>
+        </form>
       </ion-card-content>
     </ion-card>
   </div>

@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-import { UserService } from 'src/app/services/user.service'; // Asegúrate de que la ruta sea correcta
+import { UserService } from 'src/app/services/user.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-registro',
@@ -19,7 +20,8 @@ export class RegistroPage {
   constructor(
     private router: Router,
     private alertController: AlertController,
-    private userService: UserService // Inyectar el servicio
+    private userService: UserService,
+    private http: HttpClient
   ) {}
 
   async registerUser() {
@@ -33,7 +35,6 @@ export class RegistroPage {
       return;
     }
 
-    // Verificar si el usuario o el correo electrónico ya están en uso
     const users = await this.userService.getUsers();
     const userExists = users.some(u => u.username === this.user.username || u.email === this.user.email);
 
@@ -42,22 +43,36 @@ export class RegistroPage {
       return;
     }
 
-    // Agregar el nuevo usuario a la base de datos
     await this.userService.registerUser(this.user.username, this.user.email, this.user.password);
 
-    // Limpiar los campos del formulario
-    this.user = { username: '', email: '', password: '', confirmPassword: '' };
+    // Enviar correo electrónico de confirmación
+    await this.sendConfirmationEmail(this.user.email);
 
-    // Mostrar mensaje de éxito y redirigir al inicio de sesión
+    this.user = { username: '', email: '', password: '', confirmPassword: '' };
     await this.showAlert('Éxito', 'Registro exitoso');
     this.router.navigate(['/login']);
   }
 
-  // Función para mostrar alertas
+  async sendConfirmationEmail(email: string) {
+    const emailContent = {
+      to: email,
+      subject: 'Registro Exitoso en InventaryBox',
+      text: '¡Hola! Gracias por registrarte en InventaryBox. Tu registro se ha completado con éxito.'
+    };
+
+    try {
+      const response = await this.http.post('http://localhost:3000/send-email', emailContent).toPromise();
+      console.log('Correo de confirmación enviado:', response);
+    } catch (error) {
+      console.error('Error al enviar el correo:', error);
+      await this.showAlert('Error', 'No se pudo enviar el correo de confirmación.');
+    }
+  }
+
   async showAlert(header: string, message: string) {
     const alert = await this.alertController.create({
-      header: header,
-      message: message,
+      header,
+      message,
       buttons: ['OK']
     });
     await alert.present();

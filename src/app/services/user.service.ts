@@ -4,6 +4,7 @@ import { Platform } from '@ionic/angular';
 import { Product } from '../models/product.models';
 import { BehaviorSubject } from 'rxjs';
 import { AuthService } from './auth.service'; // Importa el servicio de autenticación
+import { EmailComposer } from '@ionic-native/email-composer/ngx'; // Asegúrate de importar EmailComposer
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,12 @@ export class UserService {
   private productsSubject = new BehaviorSubject<Product[]>([]);
   products$ = this.productsSubject.asObservable();
 
-  constructor(private sqlite: SQLite, private platform: Platform, private authService: AuthService) {
+  constructor(
+    private sqlite: SQLite,
+    private platform: Platform,
+    private authService: AuthService,
+    private emailComposer: EmailComposer // Inyecta EmailComposer
+  ) {
     this.platform.ready().then(() => {
       this.createDatabase();
     });
@@ -69,9 +75,40 @@ export class UserService {
     try {
       await this.dbInstance.executeSql(sql, [username, email, password]);
       console.log('Usuario registrado con éxito');
+      this.sendConfirmationEmail(email); // Enviar correo de confirmación
     } catch (error) {
       console.error('Error al registrar el usuario:', error);
     }
+  }
+
+  private sendConfirmationEmail(email: string) {
+    let emailData = {
+      to: email,
+      subject: 'Registro Exitoso',
+      body: 'Gracias por registrarte. Tu cuenta ha sido creada exitosamente.',
+      isHtml: true
+    };
+
+    this.emailComposer.open(emailData).then(() => {
+      console.log('Correo de confirmación enviado');
+    }).catch(error => {
+      console.error('Error al enviar correo de confirmación:', error);
+    });
+  }
+
+  async recoverPassword(email: string): Promise<void> {
+    let emailData = {
+      to: email,
+      subject: 'Recuperación de Contraseña',
+      body: 'Haz clic en el siguiente enlace para recuperar tu contraseña: [enlace aquí]',
+      isHtml: true
+    };
+
+    this.emailComposer.open(emailData).then(() => {
+      console.log('Correo de recuperación enviado');
+    }).catch(error => {
+      console.error('Error al enviar correo de recuperación:', error);
+    });
   }
 
   async getUsers(): Promise<any[]> {
@@ -213,7 +250,6 @@ export class UserService {
       return undefined;
     }
   }
-  
 
   async updateProduct(productId: number, updatedProduct: Product): Promise<boolean> {
     if (!this.dbInstance) return false; // Verifica si la base de datos está lista
@@ -246,5 +282,4 @@ export class UserService {
       return false; // Indica que la actualización falló
     }
   }
-  
 }
