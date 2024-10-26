@@ -3,12 +3,12 @@
     <ion-buttons slot="start">
       <app-back-arrow></app-back-arrow>
     </ion-buttons>
-    <ion-title>Editar Producto</ion-title>
+    <ion-title>Agregar Producto</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div class="container" style="padding: 16px;">
+  <div class="container">
     <ion-card>
       <ion-card-header>
         <ion-card-title>Formulario de Producto</ion-card-title>
@@ -55,13 +55,29 @@
             <ion-input formControlName="cantidad" type="number" min="0" required></ion-input>
           </ion-item>
 
+          <!-- Botón para capturar una foto -->
+          <ion-item>
+            <ion-button expand="full" color="primary" (click)="takePicture()" fill="outline">
+              <ion-icon slot="start" name="camera"></ion-icon>
+              Tomar Foto
+            </ion-button>
+          </ion-item>
+
+          <!-- Botón para subir una foto desde la galería -->
+          <ion-item>
+            <ion-button expand="full" color="secondary" (click)="uploadPicture()" fill="outline">
+              <ion-icon slot="start" name="images"></ion-icon>
+              Subir Foto desde Galería
+            </ion-button>
+          </ion-item>
+
           <!-- Mostrar la imagen seleccionada -->
           <div *ngIf="imageUrl" style="text-align: center; margin: 10px 0;">
-            <img [src]="imageUrl" alt="Imagen del producto" style="max-width: 100%; height: auto;" />
+            <img [src]="imageUrl" alt="Imagen del producto" style="max-width: 80%; height: auto;" />
           </div>
 
           <!-- Botón para Enviar el Formulario -->
-          <ion-button expand="full" type="submit" [disabled]="!productForm.valid">Actualizar Producto</ion-button>
+          <ion-button expand="full" type="submit" [disabled]="!productForm.valid">Agregar Producto</ion-button>
         </form>
       </ion-card-content>
     </ion-card>

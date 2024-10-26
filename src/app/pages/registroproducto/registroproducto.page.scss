@@ -99,3 +99,9 @@ ion-button {
 ion-button:hover {
     transform: scale(1.05);
 }
+
+/* Estilo para la imagen */
+img {
+    max-width: 150px; /* Ajusta el ancho según necesites */
+    height: auto; /* Mantiene la proporción */
+}

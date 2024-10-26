@@ -1,73 +1,47 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-  
-    </ion-buttons>
-    <ion-title>Modificar Producto</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
-  <div class="container" style="padding: 16px;">
+  <div class="container">
     <ion-card>
-      <ion-card-header>
-        <ion-card-title>Formulario de Modificación</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <form (ngSubmit)="updateProduct()">
-          <ion-item>
-            <ion-label position="floating">Nombre del Producto</ion-label>
-            <ion-input [(ngModel)]="nombre" name="nombre" required></ion-input>
-          </ion-item>
+      <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+        <ion-item>
+          <ion-label position="floating">Nombre del Producto</ion-label>
+          <ion-input formControlName="nombre" required></ion-input>
+        </ion-item>
 
-          <ion-item>
-            <ion-label>Clase</ion-label>
-            <ion-select [(ngModel)]="clase" name="clase" required>
-              <ion-select-option value="electrodomestico">Electrodoméstico</ion-select-option>
-              <ion-select-option value="muebles">Muebles</ion-select-option>
-              <ion-select-option value="menaje_hogar">Menaje Hogar</ion-select-option>
-            </ion-select>
-          </ion-item>
+        <ion-item>
+          <ion-label>Clase</ion-label>
+          <ion-select formControlName="clase" required>
+            <ion-select-option value="electrodomestico">Electrodoméstico</ion-select-option>
+            <ion-select-option value="muebles">Muebles</ion-select-option>
+            <ion-select-option value="menaje_hogar">Menaje Hogar</ion-select-option>
+          </ion-select>
+        </ion-item>
 
-          <ion-item>
-            <ion-label position="floating">Marca</ion-label>
-            <ion-input [(ngModel)]="marca" name="marca" required></ion-input>
-          </ion-item>
+        <ion-item>
+          <ion-label position="floating">Marca</ion-label>
+          <ion-input formControlName="marca" required></ion-input>
+        </ion-item>
 
-          <ion-item>
-            <ion-label position="floating">Precio Compra</ion-label>
-            <ion-input type="number" [(ngModel)]="precioCompra" name="precioCompra" min="0" required></ion-input>
-          </ion-item>
+        <ion-item>
+          <ion-label position="floating">Precio Compra</ion-label>
+          <ion-input type="number" formControlName="precioCompra" min="0" required></ion-input>
+        </ion-item>
 
-          <ion-item>
-            <ion-label position="floating">Precio Venta</ion-label>
-            <ion-input type="number" [(ngModel)]="precioVenta" name="precioVenta" min="0" required></ion-input>
-          </ion-item>
+        <ion-item>
+          <ion-label position="floating">Precio Venta</ion-label>
+          <ion-input type="number" formControlName="precioVenta" min="0" required></ion-input>
+        </ion-item>
 
-          <ion-item>
-            <ion-label position="floating">Cantidad en Stock</ion-label>
-            <ion-input type="number" [(ngModel)]="cantidad" name="cantidad" min="0" required></ion-input>
-          </ion-item>
+        <ion-item>
+          <ion-label position="floating">Cantidad en Stock</ion-label>
+          <ion-input type="number" formControlName="cantidad" min="0" required></ion-input>
+        </ion-item>
 
-          <div style="display: flex; justify-content: space-between; margin: 10px 0;">
-            <ion-button expand="full" color="primary" (click)="takePicture()" fill="solid" style="flex: 1; margin-right: 5px;">
-              <ion-icon slot="start" name="camera"></ion-icon>
-              Tomar Foto
-            </ion-button>
+        <div *ngIf="imageUrl" class="image-container">
+          <img [src]="imageUrl" alt="Imagen del producto" class="product-image" />
+        </div>
 
-            <ion-button expand="full" color="secondary" (click)="uploadPicture()" fill="solid" style="flex: 1; margin-left: 5px;">
-              <ion-icon slot="start" name="images"></ion-icon>
-              Subir Foto
-            </ion-button>
-          </div>
-
-          <div *ngIf="imagen" style="text-align: center; margin: 10px 0;">
-            <img [src]="imagen" alt="Imagen del producto" style="max-width: 100%; height: auto;" />
-          </div>
-
-          <ion-button expand="full" type="submit" color="success">Actualizar Producto</ion-button>
-        </form>
-      </ion-card-content>
+        <ion-button expand="full" type="submit" color="success">Actualizar Producto</ion-button>
+      </form>
     </ion-card>
   </div>
 </ion-content>

@@ -207,15 +207,16 @@ export class UserService {
     const sql = 'SELECT * FROM products WHERE id = ?';
     try {
       const res = await this.dbInstance.executeSql(sql, [productId]);
-      return res.rows.length > 0 ? res.rows.item(0) : undefined;
+      return res.rows.length > 0 ? res.rows.item(0) as Product : undefined; // Asegúrate de que el tipo sea Product
     } catch (error) {
       console.error('Error al obtener el producto:', error);
       return undefined;
     }
   }
+  
 
-  async updateProduct(productId: number, updatedProduct: Product): Promise<void> {
-    if (!this.dbInstance) return;
+  async updateProduct(productId: number, updatedProduct: Product): Promise<boolean> {
+    if (!this.dbInstance) return false; // Verifica si la base de datos está lista
     const sql = `UPDATE products SET 
                   nombre = ?, 
                   clase = ?, 
@@ -239,8 +240,11 @@ export class UserService {
       ]);
       console.log('Producto actualizado con éxito');
       this.loadProducts(); // Actualiza la lista de productos
+      return true; // Indica que la actualización fue exitosa
     } catch (error) {
       console.error('Error al actualizar el producto:', error);
+      return false; // Indica que la actualización falló
     }
   }
+  
 }

@@ -107,3 +107,13 @@ ion-button:hover {
     margin-right: 8px; /* Espacio entre el icono y el texto */
   }
   
+  .image-container {
+    text-align: center;
+    margin: 10px 0;
+  }
+  
+  .product-image {
+    max-width: 150px; /* Ajusta el ancho según necesites */
+    height: auto; /* Mantiene la proporción */
+  }
+  

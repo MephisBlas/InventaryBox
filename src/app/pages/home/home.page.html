@@ -42,7 +42,7 @@
   <div class="page-content ion-padding">
     <div *ngIf="productos.length > 0; else noProducts">
       <ion-list>
-        <ion-item *ngFor="let producto of productos" class="product-card">
+        <ion-item *ngFor="let producto of productos" class="product-card" (click)="producto.id ? goToModifyProduct(producto.id) : null">
           <ion-thumbnail slot="start">
             <img *ngIf="producto.imagen" [src]="producto.imagen" alt="{{ producto.nombre }}" />
           </ion-thumbnail>

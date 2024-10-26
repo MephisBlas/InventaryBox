@@ -1,11 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MenuController, ModalController, ToastController } from '@ionic/angular';
+import { MenuController, ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
 import { Product } from 'src/app/models/product.models';
 import { Subscription } from 'rxjs';
-import { ModificarproductoPage } from '../modificarproducto/modificarproducto.page';
 
 @Component({
   selector: 'app-home',
@@ -23,18 +22,13 @@ export class HomePage implements OnInit, OnDestroy {
     private authService: AuthService,
     private userService: UserService,
     private router: Router,
-    private modalController: ModalController,
     private toastController: ToastController
   ) {}
 
   ngOnInit() {
     this.setInitialTheme();
     this.loadUser();
-    this.userService.loadProducts();
-    
-    this.productsSubscription = this.userService.products$.subscribe(products => {
-      this.productos = products;
-    });
+    this.loadProducts();
   }
 
   ngOnDestroy() {
@@ -50,9 +44,26 @@ export class HomePage implements OnInit, OnDestroy {
     }
   }
 
+  private loadProducts() {
+    this.userService.loadProducts(); 
+    this.productsSubscription = this.userService.products$.subscribe(products => {
+      this.productos = products; 
+    });
+  }
+
   irARegistrarProducto() {
     this.router.navigate(['/registroproducto']);
   }
+
+  goToModifyProduct(productId: number | undefined) {
+    if (productId !== undefined) {
+      this.router.navigate([`/modificarproducto/${productId}`]);
+    } else {
+      console.error('ID de producto inválido:', productId);
+    }
+  }
+  
+  
 
   toggleTheme(event: CustomEvent) {
     this.isDarkMode = event.detail.checked;
@@ -81,23 +92,6 @@ export class HomePage implements OnInit, OnDestroy {
     this.router.navigate(['/login']);
   }
 
-  async abrirModificarProducto(producto: Product) {
-    const modal = await this.modalController.create({
-      component: ModificarproductoPage,
-      componentProps: { product: producto }
-    });
-    
-    await modal.present();
-
-    const { data } = await modal.onWillDismiss();
-    if (data) {
-      const index = this.productos.findIndex(p => p.id === data.id);
-      if (index !== -1) {
-        this.productos[index] = data;
-      }
-    }
-  }
-
   async eliminarProducto(producto: Product): Promise<void> {
     if (!producto || producto.id === undefined) {
       console.error('Producto inválido:', producto);
@@ -109,6 +103,7 @@ export class HomePage implements OnInit, OnDestroy {
       try {
         await this.userService.deleteProduct(producto.id);
         this.showToast('Producto eliminado con éxito.');
+        this.loadProducts(); 
       } catch (error) {
         console.error('Error al eliminar el producto:', error);
         this.showToast('Error al eliminar el producto.');
