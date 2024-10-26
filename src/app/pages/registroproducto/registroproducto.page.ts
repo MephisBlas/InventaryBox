@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { UserService } from 'src/app/services/user.service';
+import { Router } from '@angular/router'; // Importa Router
+import { ToastController } from '@ionic/angular'; // Importa ToastController
 
 @Component({
   selector: 'app-registroproducto',
@@ -12,7 +14,12 @@ export class RegistroproductoPage implements OnInit {
   productForm: FormGroup;
   imageUrl: string = '';
 
-  constructor(private fb: FormBuilder, private userService: UserService) {
+  constructor(
+    private fb: FormBuilder, 
+    private userService: UserService, 
+    private router: Router, // Inyecta Router
+    private toastController: ToastController // Inyecta ToastController
+  ) {
     this.productForm = this.fb.group({
       nombre: ['', Validators.required],
       clase: ['', Validators.required],
@@ -64,9 +71,20 @@ export class RegistroproductoPage implements OnInit {
       try {
         await this.userService.registerProduct(productData);
         console.log('Producto registrado:', productData);
+        
+        // Muestra un mensaje de éxito
+        const toast = await this.toastController.create({
+          message: 'Producto registrado correctamente.',
+          duration: 2000,
+          position: 'top'
+        });
+        await toast.present();
+
         this.productForm.reset();
         this.imageUrl = '';
-        // Aquí puedes mostrar un mensaje de éxito al usuario
+
+        // Redirige a la página de inicio
+        this.router.navigate(['/home']); // Ajusta la ruta según tu configuración
       } catch (error) {
         console.error('Error al registrar el producto:', error);
         // Mostrar un mensaje de error al usuario si es necesario

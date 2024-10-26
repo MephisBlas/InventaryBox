@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private dbInstance!: SQLiteObject;
@@ -14,9 +14,12 @@ export class AuthService {
   private async createDatabase() {
     this.dbInstance = await this.sqlite.create({
       name: 'users.db',
-      location: 'default'
+      location: 'default',
     });
-    await this.dbInstance.executeSql('CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, username TEXT, email TEXT, password TEXT)', []);
+    await this.dbInstance.executeSql(
+      'CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, username TEXT, email TEXT, password TEXT)',
+      []
+    );
   }
 
   // Método para verificar si el usuario está autenticado
@@ -39,6 +42,12 @@ export class AuthService {
     return JSON.parse(localStorage.getItem('loggedInUser') || 'null'); // Devuelve el usuario autenticado o null si no existe
   }
 
+  // Método para obtener el usuario actual (con id)
+  getCurrentUser() {
+    const user = this.getUser();
+    return user ? { id: user.id, username: user.username } : null; // Retorna el id y el username del usuario
+  }
+
   // Método para obtener usuarios de la base de datos
   async getUsers() {
     const sql = 'SELECT * FROM users';
@@ -49,14 +58,15 @@ export class AuthService {
     }
     return users;
   }
+
   async updateUsername(userId: number, newUsername: string) {
     const sql = 'UPDATE users SET username = ? WHERE id = ?';
     await this.dbInstance.executeSql(sql, [newUsername, userId]);
   }
-// Método para actualizar la contraseña
-async updatePassword(userId: number, newPassword: string) {
-  const sql = 'UPDATE users SET password = ? WHERE id = ?';
-  await this.dbInstance.executeSql(sql, [newPassword, userId]);
-}
-  
+
+  // Método para actualizar la contraseña
+  async updatePassword(userId: number, newPassword: string) {
+    const sql = 'UPDATE users SET password = ? WHERE id = ?';
+    await this.dbInstance.executeSql(sql, [newPassword, userId]);
+  }
 }

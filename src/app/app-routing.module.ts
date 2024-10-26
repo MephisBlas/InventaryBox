@@ -35,6 +35,7 @@ const routes: Routes = [
     path: 'registroproducto',
     loadChildren: () => import('./pages/registroproducto/registroproducto.module').then( m => m.RegistroproductoPageModule)
   },
+
   {
     path: 'cambionombre',
     loadChildren: () => import('./pages/menu/cambionombre/cambionombre.module').then( m => m.CambionombrePageModule)
@@ -43,6 +44,16 @@ const routes: Routes = [
     path: 'cambiopass',
     loadChildren: () => import('./pages/menu/cambiopass/cambiopass.module').then( m => m.CambiopassPageModule)
   },
+  {
+    path: 'notificaciones',
+    loadChildren: () => import('./pages/menu/notificaciones/notificaciones.module').then( m => m.NotificacionesPageModule)
+  },
+  {
+    path: 'modificarproducto/:id',
+    loadChildren: () => import('./pages/modificarproducto/modificarproducto.module').then(m => m.ModificarproductoPageModule)
+  },
+ 
+  
   
   
    

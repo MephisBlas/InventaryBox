@@ -7,7 +7,6 @@
 
   <ion-content class="ion-padding">
     <div class="menu-content">
-      <!-- Contenido del menú -->
       <ion-list>
         <ion-item routerLink="/perfil" (click)="closeMenu()">
           <ion-icon slot="start" name="person"></ion-icon>
@@ -19,7 +18,6 @@
         </ion-item>
       </ion-list>
 
-      <!-- Botón de Cerrar Sesión al final del menú -->
       <ion-footer class="ion-no-border">
         <ion-toolbar>
           <ion-button expand="full" color="danger" (click)="logout()">
@@ -31,50 +29,44 @@
   </ion-content>
 </ion-menu>
 
-<!-- Contenido principal -->
 <ion-content id="main-content">
   <ion-header>
     <ion-toolbar>
       <ion-buttons slot="start">
-        <!-- Botón para abrir el menú -->
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
       <ion-title>Lista de productos</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <!-- Contenido de la página principal -->
   <div class="page-content ion-padding">
     <div *ngIf="productos.length > 0; else noProducts">
-      <ion-grid>
-        <ion-row>
-          <ion-col size="6" *ngFor="let producto of productos">
-            <ion-card>
-              <img *ngIf="producto.imagen" [src]="producto.imagen" alt="{{ producto.nombre }}" />
-              <ion-card-header>
-                <ion-card-title>{{ producto.nombre }}</ion-card-title>
-                <ion-card-subtitle>{{ producto.clase }}</ion-card-subtitle>
-              </ion-card-header>
-              <ion-card-content>
-                <p><strong>Marca:</strong> {{ producto.marca }}</p>
-                <p><strong>Precio de Compra:</strong> {{ producto.precioCompra | currency }}</p>
-                <p><strong>Precio de Venta:</strong> {{ producto.precioVenta | currency }}</p>
-                <p><strong>Cantidad:</strong> {{ producto.cantidad }}</p>
-              </ion-card-content>
-              <ion-button color="danger" (click)="eliminarProducto(producto)">
-                Eliminar
-              </ion-button>
-            </ion-card>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
+      <ion-list>
+        <ion-item *ngFor="let producto of productos" class="product-card">
+          <ion-thumbnail slot="start">
+            <img *ngIf="producto.imagen" [src]="producto.imagen" alt="{{ producto.nombre }}" />
+          </ion-thumbnail>
+          <ion-label>
+            <h2>{{ producto.nombre }}</h2>
+            <h3>{{ producto.clase }}</h3>
+            <p><strong>Marca:</strong> {{ producto.marca }}</p>
+            <p><strong>Precio de Compra:</strong> {{ producto.precioCompra | currency }}</p>
+            <p><strong>Precio de Venta:</strong> {{ producto.precioVenta | currency }}</p>
+            <p><strong>Cantidad:</strong> {{ producto.cantidad }}</p>
+            <ion-button color="danger" (click)="eliminarProducto(producto); $event.stopPropagation()">Eliminar</ion-button>
+            <ion-button color="success" (click)="venderProducto(producto); $event.stopPropagation()">Vender 1</ion-button>
+          </ion-label>
+        </ion-item>
+      </ion-list>
     </div>
 
     <ng-template #noProducts>
-      <p>No hay productos registrados.</p>
+      <div class="no-products-container">
+        <ion-icon name="sad" class="no-products-icon"></ion-icon>
+        <p>No hay productos registrados.</p>
+      </div>
     </ng-template>
 
-    <!-- Botón flotante de registro de productos -->
     <ion-fab vertical="bottom" horizontal="end" slot="fixed">
       <ion-fab-button color="primary" (click)="irARegistrarProducto()">
         <ion-icon name="add"></ion-icon>

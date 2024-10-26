@@ -65,6 +65,38 @@ ion-footer {
 
   ion-card {
     margin-bottom: 15px;
+    display: flex; /* Permite la disposición en flex */
+    align-items: center; /* Centra verticalmente el contenido */
+    padding: 10px; /* Espaciado interno */
+    border-radius: 10px; /* Bordes redondeados */
+    background: white; /* Fondo blanco para las tarjetas */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra para un efecto de elevación */
   }
 
+  ion-card ion-label {
+    flex: 1; /* Permite que el texto ocupe el espacio restante */
+    padding-left: 10px; /* Espaciado entre imagen y texto */
+  }
+
+  .no-products-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra horizontalmente */
+    justify-content: center; /* Centra verticalmente */
+    height: 70vh; /* Ajusta la altura según sea necesario */
+    text-align: center; /* Centra el texto */
+    color: #000000; /* Color del texto */
+  }
+  
+  .no-products-icon {
+    font-size: 50px; /* Tamaño del icono */
+    margin-bottom: 15px; /* Espaciado debajo del icono */
+  }
+  
+  .no-products-container p {
+    font-weight: bold; /* Hace el texto más grueso */
+    font-size: 18px; /* Ajusta el tamaño de la fuente si es necesario */
+  }
+  
+  
 }

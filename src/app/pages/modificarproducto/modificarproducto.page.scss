@@ -1,0 +1,109 @@
+@import '~animate.css/animate.min.css'; /* Asegúrate de tener Animate.css instalado */
+
+ion-content {
+    --background: transparent; /* Asegura que el ion-content no tape el fondo */
+}
+
+/* Centrar el contenedor en el centro de la página */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+}
+
+/* Estilo para el ion-card */
+ion-card {
+    width: 100%;
+    max-width: 600px;
+    padding: 24px; /* Aumentar un poco el padding */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Más sombra */
+    border-radius: 12px; /* Bordes más redondeados */
+    animation: slideIn 1s ease-out; /* Cambia a una nueva animación */
+}
+
+/* Animación de entrada del formulario */
+form {
+    animation: slideInUp 1s ease-out; /* Cambia la animación */
+}
+
+/* Animación para los campos de entrada */
+ion-item {
+    margin-bottom: 20px; /* Mayor separación */
+    animation: fadeInRight 0.8s ease-out; /* Nueva animación para los items */
+}
+
+/* Animación para el botón de guardar */
+ion-button {
+    animation: pulse 0.8s infinite; /* Pulsar de forma continua */
+    transition: background-color 0.3s, transform 0.2s; /* Transiciones suaves */
+}
+
+/* Animaciones definidas */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+/* Efecto de hover en el botón */
+ion-button:hover {
+    background-color: var(--ion-color-primary-shade); /* Color más oscuro en hover */
+    transform: scale(1.05);
+}
+.custom-toast {
+    --background: #4CAF50; /* Color de fondo verde */
+    --color: white; /* Color del texto */
+    border-radius: 8px; /* Bordes redondeados */
+    padding: 12px; /* Espaciado interno */
+    font-size: 16px; /* Tamaño de fuente */
+    display: flex; /* Flexbox para alinear icono y texto */
+    align-items: center; /* Centrar verticalmente */
+  }
+  
+  .custom-toast::before {
+    content: '';
+    background-image: url('/assets/icon/checkmark-circle.svg'); /* Cambia la ruta al icono deseado */
+    background-size: 20px; /* Tamaño del icono */
+    width: 20px; /* Ancho del icono */
+    height: 20px; /* Alto del icono */
+    margin-right: 8px; /* Espacio entre el icono y el texto */
+  }
+  

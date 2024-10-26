@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-import { AuthService } from 'src/app/services/auth.service'; // Asegúrate de importar el AuthService
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -41,11 +41,13 @@ export class LoginPage implements OnInit {
     }
 
     // Verificar si el usuario existe en la lista y si la contraseña es correcta
-    const foundUser = storedUsers.find((u: any) => u.username === this.user.username && u.password === this.user.password);
+    const foundUser = storedUsers.find((u: any) => 
+      u.username === this.user.username && u.password === this.user.password
+    );
 
     if (foundUser) {
       // Guardar información del usuario en localStorage para mantener la sesión
-      this.authService.login(foundUser); // Usa el AuthService para iniciar sesión
+      this.authService.login(foundUser);
       
       // Inicio de sesión exitoso
       await this.showAlert('Éxito', `Inicio de sesión exitoso. Bienvenido, ${foundUser.username}`);
@@ -63,7 +65,6 @@ export class LoginPage implements OnInit {
       message: message,
       buttons: ['OK']
     });
-
     await alert.present();
   }
 

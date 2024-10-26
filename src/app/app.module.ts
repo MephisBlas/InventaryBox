@@ -3,10 +3,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
+import { SQLite } from '@ionic-native/sqlite/ngx';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { ReactiveFormsModule } from '@angular/forms'; // Importa ReactiveFormsModule
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'; // Importa FormsModule y ReactiveFormsModule
 
 @NgModule({
   declarations: [AppComponent],
@@ -14,7 +14,8 @@ import { ReactiveFormsModule } from '@angular/forms'; // Importa ReactiveFormsMo
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    ReactiveFormsModule, // Usa ReactiveFormsModule aquí
+    FormsModule, // Añade esto
+    ReactiveFormsModule, // Puedes dejar esto si planeas usar formularios reactivos
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
