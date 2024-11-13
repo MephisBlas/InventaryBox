@@ -70,6 +70,10 @@ const routes: Routes = [
     path: '**', // Ruta para el 404
     component: NotFoundComponent
   },
+  {
+    path: 'graficos',
+    loadChildren: () => import('./pages/graficos/graficos.module').then( m => m.GraficosPageModule)
+  },
  
 ];
 

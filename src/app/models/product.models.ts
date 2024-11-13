@@ -6,6 +6,6 @@ export interface Product {
   precioCompra: number;
   precioVenta: number;
   cantidad: number;
-  ventas?: number; // Añade esta propiedad
-  imagen?: string; // Si la tienes
+  ventas?: number; 
+  imagen?: string; 
 }

@@ -114,13 +114,16 @@ export class HomePage implements OnInit, OnDestroy {
       console.error('Producto inválido:', producto);
       return;
     }
-
+  
     if (producto.cantidad > 0) {
-      producto.cantidad--;
+      producto.cantidad--;  // Reducir la cantidad en stock
       producto.ventas = (producto.ventas || 0) + 1; // Incrementar las ventas
+  
       try {
+        // Actualiza el producto en la base de datos
         await this.userService.updateProduct(producto.id, producto);
         this.showToast(`Has vendido 1 ${producto.nombre}.`);
+        this.loadProducts();  // Recargar los productos para actualizar la vista
       } catch (error) {
         console.error('Error al actualizar el producto:', error);
         this.showToast('Error al actualizar el producto.');
@@ -129,6 +132,7 @@ export class HomePage implements OnInit, OnDestroy {
       this.showToast('No hay suficiente stock para vender este producto.');
     }
   }
+  
 
   async showToast(message: string) {
     const toast = await this.toastController.create({
