@@ -1,17 +1,35 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>Gráficos de gays</ion-title>
+    <ion-title>Gráficos de Ventas</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <!-- Gráfico de barras -->
-  <div style="display: block; margin-bottom: 20px;">
-    <canvas id="barChart" style="width: 100%; height: 300px;"></canvas>
-  </div>
+<ion-content>
+  <div class="content-container">
 
-  <!-- Gráfico de pastel -->
-  <div style="display: block;">
-    <canvas id="pieChart" style="width: 100%; height: 300px;"></canvas>
+    <!-- Card para el gráfico de barras -->
+    <ion-card *ngIf="hasSales || productos.length > 0">
+      <ion-card-header>
+        <ion-card-title>Gráfico de Ventas por Producto</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="chart-container">
+          <canvas id="barChart"></canvas>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Card para el gráfico de pastel -->
+    <ion-card *ngIf="hasSales || productos.length > 0">
+      <ion-card-header>
+        <ion-card-title>Distribución de Ventas</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="chart-container">
+          <canvas id="pieChart"></canvas>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
   </div>
 </ion-content>

@@ -1,0 +1,43 @@
+ion-content {
+    --background: transparent;
+    /* Fondo transparente para que el contenido no tape el fondo */
+}
+
+.chart-container {
+    position: relative;
+    height: 300px; /* Ajusta el tamaño de los gráficos */
+    margin-bottom: 20px;
+  }
+  
+  .no-sales-message {
+    text-align: center;
+    margin-top: 20px;
+  }
+  /* Estilos básicos para el contenedor de los gráficos */
+.content-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  /* Estilo para cada contenedor de gráfico */
+  .chart-container {
+    width: 100%;
+    height: 300px; /* Tamaño del gráfico */
+  }
+  
+  /* Estilo para la tarjeta */
+  ion-card {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  /* Títulos dentro de los cards */
+  ion-card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+  }
+  

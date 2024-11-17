@@ -63,17 +63,13 @@ const routes: Routes = [
   },
   {
     path: 'graficos',
-    loadChildren: () => import('./pages/menu/graficos/graficos.module').then( m => m.GraficosPageModule),
-    canActivate: [authGuard] 
+    loadChildren: () => import('./pages/graficos/graficos.module').then( m => m.GraficosPageModule),
   },
   {
     path: '**', // Ruta para el 404
     component: NotFoundComponent
   },
-  {
-    path: 'graficos',
-    loadChildren: () => import('./pages/graficos/graficos.module').then( m => m.GraficosPageModule)
-  },
+
  
 ];
 

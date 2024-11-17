@@ -57,9 +57,11 @@ export class ModificarproductoPage implements OnInit {
         this.imageUrl = product.imagen || ''; // Muestra la imagen si existe
       } else {
         console.error('Producto no encontrado.');
+        await this.showToast('Producto no encontrado.');
       }
     } catch (error) {
       console.error('Error al cargar el producto:', error);
+      await this.showToast('Error al cargar el producto.');
     }
   }
 
@@ -67,29 +69,28 @@ export class ModificarproductoPage implements OnInit {
     if (this.productForm.valid) {
       const productId = this.route.snapshot.paramMap.get('id');
       const productData: Product = { ...this.productForm.value, imagen: this.imageUrl }; // Incluye imagen
-
+  
       try {
         if (productId) {
-          const success = await this.userService.updateProduct(parseInt(productId), productData);
-          if (success) {
-            const toast = await this.toastController.create({
-              message: 'Producto actualizado correctamente.',
-              duration: 2000,
-              position: 'top'
-            });
-            await toast.present();
-            this.router.navigate(['/home']);
-          } else {
-            const toast = await this.toastController.create({
-              message: 'Error al actualizar el producto. Inténtalo de nuevo.',
-              duration: 2000,
-              position: 'top'
-            });
-            await toast.present();
-          }
+          // Ejecutar la actualización sin esperar un valor de retorno
+          await this.userService.updateProduct(parseInt(productId), productData);
+          
+          const toast = await this.toastController.create({
+            message: 'Producto actualizado correctamente.',
+            duration: 2000,
+            position: 'top'
+          });
+          await toast.present();
+          this.router.navigate(['/home']);
         }
       } catch (error) {
         console.error('Error al actualizar el producto:', error);
+        const toast = await this.toastController.create({
+          message: 'Error al actualizar el producto.',
+          duration: 2000,
+          position: 'top'
+        });
+        await toast.present();
       }
     } else {
       console.log('Formulario no válido', this.productForm.errors);
@@ -100,5 +101,16 @@ export class ModificarproductoPage implements OnInit {
       });
       await toast.present();
     }
+  }
+  
+
+  // Método para mostrar un Toast
+  async showToast(message: string) {
+    const toast = await this.toastController.create({
+      message,
+      duration: 2000,
+      position: 'top'
+    });
+    await toast.present();
   }
 }

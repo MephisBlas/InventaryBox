@@ -5,6 +5,7 @@ import { Product } from '../models/product.models';
 import { BehaviorSubject } from 'rxjs';
 import { AuthService } from './auth.service'; // Importa el servicio de autenticación
 import { EmailComposer } from '@ionic-native/email-composer/ngx'; // Asegúrate de importar EmailComposer
+import { Venta } from '../models/ventas.models';
 
 @Injectable({
   providedIn: 'root',
@@ -25,6 +26,7 @@ export class UserService {
     });
   }
 
+  // Crear la base de datos y las tablas
   private async createDatabase(): Promise<void> {
     try {
       this.dbInstance = await this.sqlite.create({
@@ -38,12 +40,12 @@ export class UserService {
     }
   }
 
-
-
+  // Crear las tablas necesarias (usuarios, productos, configuraciones, ventas)
   private async createTables(): Promise<void> {
     if (!this.dbInstance) return;
 
     try {
+      // Tabla de usuarios
       await this.dbInstance.executeSql(`
         CREATE TABLE IF NOT EXISTS users (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -52,12 +54,14 @@ export class UserService {
           password TEXT
         )`, []);
 
+      // Tabla de configuraciones (tema)
       await this.dbInstance.executeSql(`
         CREATE TABLE IF NOT EXISTS settings (
           id INTEGER PRIMARY KEY,
           theme TEXT
         )`, []);
 
+      // Tabla de productos
       await this.dbInstance.executeSql(`
         CREATE TABLE IF NOT EXISTS products (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -71,10 +75,11 @@ export class UserService {
           userId TEXT
         )`, []);
 
-      // Crear la tabla de ventas
+      // Tabla de ventas
       await this.dbInstance.executeSql(`
         CREATE TABLE IF NOT EXISTS ventas (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
+          nombreProducto TEXT,  
           productoId INTEGER,
           cantidad INTEGER,
           fecha TEXT,
@@ -87,7 +92,7 @@ export class UserService {
     }
   }
 
-
+  // Registrar un nuevo usuario
   async registerUser(username: string, email: string, password: string): Promise<void> {
     if (!this.dbInstance) return;
     const sql = 'INSERT INTO users (username, email, password) VALUES (?, ?, ?)';
@@ -100,6 +105,7 @@ export class UserService {
     }
   }
 
+  // Enviar un correo de confirmación
   private sendConfirmationEmail(email: string) {
     let emailData = {
       to: email,
@@ -115,6 +121,7 @@ export class UserService {
     });
   }
 
+  // Recuperar la contraseña (enviar correo)
   async recoverPassword(email: string): Promise<void> {
     let emailData = {
       to: email,
@@ -130,6 +137,7 @@ export class UserService {
     });
   }
 
+  // Obtener todos los usuarios
   async getUsers(): Promise<any[]> {
     if (!this.dbInstance) return [];
     const sql = 'SELECT * FROM users';
@@ -146,6 +154,7 @@ export class UserService {
     }
   }
 
+  // Registrar un producto
   async registerProduct(product: Product): Promise<void> {
     if (!this.dbInstance) return;
     const userId = this.authService.getCurrentUser()?.id; // Obtén el ID del usuario actual
@@ -175,11 +184,13 @@ export class UserService {
     }
   }
 
+  // Cargar los productos
   async loadProducts(): Promise<void> {
     const products = await this.getProducts(); // Obtiene la lista de productos
     this.productsSubject.next(products); // Emite la nueva lista de productos
   }
 
+  // Obtener todos los productos
   async getProducts(): Promise<Product[]> {
     if (!this.dbInstance) return [];
     const sql = 'SELECT * FROM products';
@@ -196,6 +207,7 @@ export class UserService {
     }
   }
 
+  // Obtener productos por usuario
   async getProductsByUser(userId: string): Promise<Product[]> {
     if (!this.dbInstance) return [];
     const sql = 'SELECT * FROM products WHERE userId = ?';
@@ -212,6 +224,7 @@ export class UserService {
     }
   }
 
+  // Actualizar contraseña del usuario
   async updateUserPassword(username: string, currentPassword: string, newPassword: string): Promise<boolean> {
     if (!this.dbInstance) return false;
     const sql = 'UPDATE users SET password = ? WHERE username = ? AND password = ?';
@@ -224,6 +237,7 @@ export class UserService {
     }
   }
 
+  // Guardar tema de la aplicación
   async saveTheme(theme: string): Promise<void> {
     if (!this.dbInstance) return;
     const sql = 'INSERT OR REPLACE INTO settings (id, theme) VALUES (1, ?)';
@@ -234,6 +248,7 @@ export class UserService {
     }
   }
 
+  // Cargar tema de la aplicación
   async loadTheme(): Promise<string | null> {
     if (!this.dbInstance) return null;
     const sql = 'SELECT theme FROM settings WHERE id = 1';
@@ -246,6 +261,7 @@ export class UserService {
     }
   }
 
+  // Eliminar un producto
   async deleteProduct(productId: number): Promise<void> {
     if (!this.dbInstance) return;
     const sql = 'DELETE FROM products WHERE id = ?';
@@ -258,6 +274,7 @@ export class UserService {
     }
   }
 
+  // Obtener producto por ID
   async getProductById(productId: number): Promise<Product | undefined> {
     if (!this.dbInstance) return undefined;
     const sql = 'SELECT * FROM products WHERE id = ?';
@@ -270,141 +287,14 @@ export class UserService {
     }
   }
 
-  async sellProduct(productId: number, quantity: number): Promise<void> {
+  // Método para actualizar un producto en UserService
+  async updateProduct(productId: number, updatedProduct: Product): Promise<void> {
     if (!this.dbInstance) return;
 
-    const sqlGetProduct = 'SELECT * FROM products WHERE id = ?';
+    const sql = `UPDATE products SET nombre = ?, clase = ?, marca = ?, precioCompra = ?, 
+               precioVenta = ?, cantidad = ?, imagen = ? WHERE id = ?`;
     try {
-      // Obtener el producto desde la base de datos
-      const res = await this.dbInstance.executeSql(sqlGetProduct, [productId]);
-      if (res.rows.length > 0) {
-        const product = res.rows.item(0) as Product;
-
-        // Verificar si hay suficiente cantidad para la venta
-        if (product.cantidad >= quantity) {
-          const newQuantity = product.cantidad - quantity;
-          const newSales = (product.ventas || 0) + quantity;
-          const saleDate = new Date().toISOString();  // Fecha actual en formato ISO
-
-          // Actualizar la cantidad y las ventas
-          const sqlUpdate = `UPDATE products 
-                             SET cantidad = ?, ventas = ? 
-                             WHERE id = ?`;
-          await this.dbInstance.executeSql(sqlUpdate, [newQuantity, newSales, productId]);
-
-          // Registrar la venta en la tabla de ventas
-          const sqlInsertSale = `INSERT INTO ventas (productoId, cantidad, fecha) 
-                                 VALUES (?, ?, ?)`;
-          await this.dbInstance.executeSql(sqlInsertSale, [productId, quantity, saleDate]);
-
-          console.log(`Venta registrada para el producto ${product.nombre}, cantidad vendida: ${quantity}`);
-
-          // Actualizar la lista de productos
-          this.loadProducts();  // Llamar a loadProducts para emitir la lista actualizada
-        } else {
-          console.log('No hay suficiente stock para realizar la venta');
-        }
-      }
-    } catch (error) {
-      console.error('Error al registrar la venta:', error);
-    }
-  }
-
-
-  // Obtener ventas por un rango de fechas
-  async getSalesByDateRange(startDate: string, endDate: string): Promise<any[]> {
-    if (!this.dbInstance) return [];
-
-    const sql = `SELECT productoId, SUM(cantidad) AS totalVentas 
-               FROM ventas 
-               WHERE fecha BETWEEN ? AND ? 
-               GROUP BY productoId`;
-    try {
-      const res = await this.dbInstance.executeSql(sql, [startDate, endDate]);
-      const sales: any[] = [];
-      for (let i = 0; i < res.rows.length; i++) {
-        sales.push(res.rows.item(i));
-      }
-      return sales;
-    } catch (error) {
-      console.error('Error al obtener las ventas:', error);
-      return [];
-    }
-  }
-
-  getDateRange(filter: 'daily' | 'weekly' | 'monthly' | 'yearly') {
-    const today = new Date();
-    let startDate = new Date(today);
-    let endDate = new Date(today);
-
-    switch (filter) {
-      case 'daily':
-        startDate.setHours(0, 0, 0, 0); // Inicio del día
-        endDate.setHours(23, 59, 59, 999); // Fin del día
-        break;
-      case 'weekly':
-        const dayOfWeek = today.getDay();
-        startDate.setDate(today.getDate() - dayOfWeek); // Inicio de la semana (domingo)
-        startDate.setHours(0, 0, 0, 0);
-        endDate.setDate(today.getDate() + (6 - dayOfWeek)); // Fin de la semana (sábado)
-        endDate.setHours(23, 59, 59, 999);
-        break;
-      case 'monthly':
-        startDate.setDate(1); // Primer día del mes
-        startDate.setHours(0, 0, 0, 0);
-        endDate.setMonth(today.getMonth() + 1);
-        endDate.setDate(0); // Último día del mes
-        endDate.setHours(23, 59, 59, 999);
-        break;
-      case 'yearly':
-        startDate.setMonth(0, 1); // Primer día del año
-        startDate.setHours(0, 0, 0, 0);
-        endDate.setMonth(11, 31); // Último día del año
-        endDate.setHours(23, 59, 59, 999);
-        break;
-    }
-
-    return {
-      startDate: startDate.toISOString(),
-      endDate: endDate.toISOString(),
-    };
-  }
-
-  // Obtener ventas por usuario y rango de fechas
-  async getSalesByUserAndDateRange(userId: string, startDate: string, endDate: string): Promise<any[]> {
-    if (!this.dbInstance) return [];
-
-    const sql = `SELECT productoId, SUM(cantidad) AS totalVentas 
-               FROM ventas 
-               WHERE userId = ? AND fecha BETWEEN ? AND ? 
-               GROUP BY productoId`;
-    try {
-      const res = await this.dbInstance.executeSql(sql, [userId, startDate, endDate]);
-      const sales: any[] = [];
-      for (let i = 0; i < res.rows.length; i++) {
-        sales.push(res.rows.item(i));
-      }
-      return sales;
-    } catch (error) {
-      console.error('Error al obtener las ventas por usuario:', error);
-      return [];
-    }
-  }
-
-
-  async updateProduct(productId: number, updatedProduct: Product): Promise<boolean> {
-    if (!this.dbInstance) return false; // Verifica si la base de datos está lista
-    const sql = `UPDATE products SET 
-                  nombre = ?, 
-                  clase = ?, 
-                  marca = ?, 
-                  precioCompra = ?, 
-                  precioVenta = ?, 
-                  cantidad = ?, 
-                  imagen = ? 
-                  WHERE id = ?`;
-
-    try {
+      // Ejecutar la actualización
       await this.dbInstance.executeSql(sql, [
         updatedProduct.nombre,
         updatedProduct.clase,
@@ -413,14 +303,79 @@ export class UserService {
         updatedProduct.precioVenta,
         updatedProduct.cantidad,
         updatedProduct.imagen,
-        productId,
+        productId
       ]);
       console.log('Producto actualizado con éxito');
       this.loadProducts(); // Actualiza la lista de productos
-      return true; // Indica que la actualización fue exitosa
     } catch (error) {
       console.error('Error al actualizar el producto:', error);
-      return false; // Indica que la actualización falló
     }
   }
+
+  // Registrar una venta de producto
+async sellProduct(productId: number, quantity: number): Promise<void> {
+  if (!this.dbInstance) {
+    console.error('No hay instancia de base de datos');
+    return;
+  }
+
+  const sqlGetProduct = 'SELECT * FROM products WHERE id = ?';
+  try {
+    // Obtener el producto desde la base de datos
+    const res = await this.dbInstance.executeSql(sqlGetProduct, [productId]);
+
+    if (res.rows.length > 0) {
+      const product = res.rows.item(0) as Product;
+
+      // Verificar si hay suficiente cantidad para la venta
+      if (product.cantidad >= quantity) {
+        const newQuantity = product.cantidad - quantity;  // Actualizar la cantidad de productos disponibles
+        const saleDate = new Date().toISOString();  // Fecha actual en formato ISO
+
+        // Actualizar la cantidad del producto en la tabla de productos
+        const sqlUpdateProduct = `
+          UPDATE products 
+          SET cantidad = ? 
+          WHERE id = ?
+        `;
+        await this.dbInstance.executeSql(sqlUpdateProduct, [newQuantity, productId]);
+
+        // Registrar la venta en la tabla de ventas
+        const sqlInsertSale = `
+          INSERT INTO ventas (productoId, nombreProducto, cantidad, fecha) 
+          VALUES (?, ?, ?, ?)
+        `;
+        await this.dbInstance.executeSql(sqlInsertSale, [productId, product.nombre, quantity, saleDate]);
+
+        console.log(`Venta registrada para el producto ${product.nombre}, cantidad vendida: ${quantity}`);
+
+        // Actualizar la lista de productos
+        this.loadProducts();  // Llamar a loadProducts para emitir la lista actualizada
+
+      } else {
+        console.log('No hay suficiente stock para realizar la venta');
+      }
+    } else {
+      console.log('Producto no encontrado');
+    }
+  } catch (error) {
+    console.error('Error al registrar la venta:', error);
+  }
+}
+
+
+  // Obtener la cantidad de ventas de un producto específico
+  async getSalesByProductId(productId: number): Promise<number> {
+    if (!this.dbInstance) return 0;
+
+    const sql = 'SELECT COUNT(*) AS salesCount FROM ventas WHERE productoId = ?';
+    try {
+      const res = await this.dbInstance.executeSql(sql, [productId]);
+      return res.rows.length > 0 ? res.rows.item(0).salesCount : 0;
+    } catch (error) {
+      console.error('Error al obtener las ventas del producto:', error);
+      return 0;
+    }
+  }
+
 }

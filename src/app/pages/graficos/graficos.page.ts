@@ -1,80 +1,81 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 import { Product } from 'src/app/models/product.models';
 import { Subscription } from 'rxjs';
 import { ToastController } from '@ionic/angular';
 import { Chart } from 'chart.js';
+import { Venta } from 'src/app/models/ventas.models';
 
 @Component({
   selector: 'app-graficos',
   templateUrl: './graficos.page.html',
   styleUrls: ['./graficos.page.scss'],
 })
-export class GraficosPage implements OnInit, AfterViewInit, OnDestroy {
+export class GraficosPage implements OnInit, OnDestroy {
   productos: Product[] = [];
   private productsSubscription: Subscription | null = null;
   barChart: any;
   pieChart: any;
+  hasSales: boolean = false; // Verifica si hay ventas
 
   constructor(private userService: UserService, private toastController: ToastController) {}
 
   ngOnInit() {
     // Suscribirse a los cambios de productos
-    this.productsSubscription = this.userService.products$.subscribe(products => {
+    this.productsSubscription = this.userService.products$.subscribe(async (products) => {
       this.productos = products;
-      this.updateCharts(); // Actualizar gráficos con los productos más recientes
+      await this.loadSalesData();  // Cargar las ventas de cada producto
+      this.checkSales();  // Verifica si hay ventas
+      this.createCharts();  // Crear los gráficos
     });
 
     // Cargar productos desde la base de datos
     this.userService.loadProducts();
   }
 
-  ngAfterViewInit() {
-    // Crear los gráficos al inicializar la vista
-    this.createBarChart();
-    this.createPieChart();
-  }
-
   ngOnDestroy() {
     // Limpiar suscripción cuando el componente se destruye
-    this.productsSubscription?.unsubscribe();
-  }
-
-  // Método para vender un producto
-  async sellProduct(productId: number): Promise<void> {
-    const producto = this.productos.find(p => p.id === productId);
-
-    if (!producto) {
-      console.error('Producto no encontrado.');
-      return;
+    if (this.productsSubscription) {
+      this.productsSubscription.unsubscribe();
     }
 
-    if (producto.cantidad > 0) {
-      producto.cantidad--;  // Reducir la cantidad en stock
-      producto.ventas = (producto.ventas || 0) + 1; // Incrementar las ventas
+    // Destruir gráficos para evitar memory leaks
+    if (this.barChart) {
+      this.barChart.destroy();
+    }
+    if (this.pieChart) {
+      this.pieChart.destroy();
+    }
+  }
 
+  // Verificar si hay ventas
+  checkSales() {
+    // Revisamos si al menos uno de los productos tiene ventas > 0
+    this.hasSales = this.productos.some(p => (p.ventas || 0) > 0);
+    console.log('¿Hay ventas?', this.hasSales); // Verificamos si hay ventas
+  }
+
+  // Cargar las ventas de cada producto
+  async loadSalesData() {
+    for (let producto of this.productos) {
       try {
-        // Actualiza el producto en la base de datos
-        await this.userService.updateProduct(producto.id, producto);
-        this.showToast(`Has vendido 1 ${producto.nombre}.`);
-        this.updateCharts();  // Actualizar los gráficos
+        const sales = await this.userService.getSalesByProductId(producto.id);
+        producto.ventas = sales || 0;  // Asignamos la cantidad de ventas al producto, asegurando que no sea null
       } catch (error) {
-        console.error('Error al actualizar el producto:', error);
-        this.showToast('Error al actualizar el producto.');
+        console.error('Error al cargar ventas para el producto', producto.id, error);
+        producto.ventas = 0;  // Si hay error, asignamos 0 ventas
       }
-    } else {
-      this.showToast('No hay suficiente stock para vender este producto.');
     }
   }
 
-  // Método para mostrar un toast
-  async showToast(message: string) {
-    const toast = await this.toastController.create({
-      message,
-      duration: 2000,
-      position: 'top',
-    });
-    await toast.present();
+  // Crear los gráficos (barras y pastel)
+  createCharts() {
+    if (this.barChart || this.pieChart) {
+      this.updateCharts(); // Si los gráficos ya existen, actualizamos
+    } else {
+      this.createBarChart(); // Si no existen, los creamos
+      this.createPieChart();
+    }
   }
 
   // Crear gráfico de barras
@@ -83,10 +84,10 @@ export class GraficosPage implements OnInit, AfterViewInit, OnDestroy {
     this.barChart = new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: this.productos.map(p => p.nombre),
+        labels: this.productos.map(p => p.nombre),  // Nombres de productos
         datasets: [{
           label: 'Ventas',
-          data: this.productos.map(p => p.ventas || 0),
+          data: this.productos.map(p => p.ventas || 0),  // Usamos 0 si no hay ventas
           backgroundColor: 'rgba(54, 162, 235, 0.2)',
           borderColor: 'rgba(54, 162, 235, 1)',
           borderWidth: 1
@@ -99,6 +100,17 @@ export class GraficosPage implements OnInit, AfterViewInit, OnDestroy {
           y: {
             beginAtZero: true
           }
+        },
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: function(tooltipItem) {
+                const productName = tooltipItem.label;
+                const sales = tooltipItem.raw;
+                return `${productName}: ${sales} ventas`;
+              }
+            }
+          }
         }
       }
     });
@@ -110,10 +122,10 @@ export class GraficosPage implements OnInit, AfterViewInit, OnDestroy {
     this.pieChart = new Chart(ctx, {
       type: 'pie',
       data: {
-        labels: this.productos.map(p => p.nombre),
+        labels: this.productos.map(p => p.nombre),  // Nombres de productos
         datasets: [{
           label: 'Distribución de Ventas',
-          data: this.productos.map(p => p.ventas || 0),
+          data: this.productos.map(p => p.ventas || 0),  // Usamos 0 si no hay ventas
           backgroundColor: [
             'rgba(255, 99, 132, 0.2)',
             'rgba(54, 162, 235, 0.2)',
@@ -139,6 +151,15 @@ export class GraficosPage implements OnInit, AfterViewInit, OnDestroy {
         plugins: {
           legend: {
             position: 'top',
+          },
+          tooltip: {
+            callbacks: {
+              label: function(tooltipItem) {
+                const productName = tooltipItem.label;
+                const sales = tooltipItem.raw;
+                return `${productName}: ${sales} ventas`;  // Mostrar nombre del producto y cantidad de ventas
+              }
+            }
           }
         }
       }
@@ -147,12 +168,19 @@ export class GraficosPage implements OnInit, AfterViewInit, OnDestroy {
 
   // Actualizar los gráficos
   updateCharts() {
+    // Si no hay ventas, mostramos los gráficos vacíos con 0 ventas.
+    if (!this.hasSales) {
+      console.log('No hay ventas para mostrar.');
+    }
+
+    // Actualizar gráfico de barras
     if (this.barChart) {
       this.barChart.data.labels = this.productos.map(p => p.nombre);
       this.barChart.data.datasets[0].data = this.productos.map(p => p.ventas || 0);
       this.barChart.update();
     }
-
+     
+    // Actualizar gráfico de pastel
     if (this.pieChart) {
       this.pieChart.data.labels = this.productos.map(p => p.nombre);
       this.pieChart.data.datasets[0].data = this.productos.map(p => p.ventas || 0);

@@ -63,18 +63,18 @@
         </ion-item>
       </ion-list>
     </div>
-
-    <ng-template #noProducts>
-      <div class="no-products-container">
-        <ion-icon name="sad" class="no-products-icon"></ion-icon>
-        <p>No hay productos registrados.</p>
-      </div>
-    </ng-template>
-
-    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-      <ion-fab-button color="primary" (click)="irARegistrarProducto()">
-        <ion-icon name="add"></ion-icon>
-      </ion-fab-button>
-    </ion-fab>
   </div>
+
+  <ng-template #noProducts>
+    <div class="no-products-container">
+      <ion-icon name="sad" class="no-products-icon"></ion-icon>
+      <p>No hay productos registrados.</p>
+    </div>
+  </ng-template>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="primary" (click)="irARegistrarProducto()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
