@@ -17,6 +17,7 @@
 
     <ion-card-content>
       <form (ngSubmit)="registerUser()" #registerForm="ngForm">
+        <!-- Nombre de Usuario -->
         <ion-item>
           <ion-label position="floating">Nombre de Usuario</ion-label>
           <ion-input
@@ -27,6 +28,7 @@
           ></ion-input>
         </ion-item>
 
+        <!-- Correo Electrónico -->
         <ion-item>
           <ion-label position="floating">Correo Electrónico</ion-label>
           <ion-input
@@ -34,9 +36,16 @@
             [(ngModel)]="user.email"
             name="email"
             required
+            pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+            #email="ngModel"
           ></ion-input>
         </ion-item>
+        <!-- Mensaje de error para correo -->
+        <ion-text color="danger" *ngIf="email.invalid && email.touched">
+          Por favor, ingresa un correo electrónico válido.
+        </ion-text>
 
+        <!-- Contraseña -->
         <ion-item>
           <ion-label position="floating">Contraseña</ion-label>
           <ion-input
@@ -44,9 +53,16 @@
             [(ngModel)]="user.password"
             name="password"
             required
+            minlength="6"
+            #password="ngModel"
           ></ion-input>
         </ion-item>
+        <!-- Mensaje de error para contraseña -->
+        <ion-text color="danger" *ngIf="password.invalid && password.touched">
+          La contraseña debe tener al menos 6 caracteres.
+        </ion-text>
 
+        <!-- Repetir Contraseña -->
         <ion-item>
           <ion-label position="floating">Repetir Contraseña</ion-label>
           <ion-input
@@ -54,9 +70,16 @@
             [(ngModel)]="user.confirmPassword"
             name="confirmPassword"
             required
+            [pattern]="user.password"
+            #confirmPassword="ngModel"
           ></ion-input>
         </ion-item>
+        <!-- Mensaje de error para confirmación de contraseña -->
+        <ion-text color="danger" *ngIf="confirmPassword.invalid && confirmPassword.touched">
+          Las contraseñas no coinciden.
+        </ion-text>
 
+        <!-- Botón de Registro -->
         <div class="register-actions animate__animated animate__fadeInUp animate__delay-3s">
           <ion-button expand="block" color="primary" type="submit" [disabled]="!registerForm.valid">
             Registrarse
@@ -66,3 +89,15 @@
     </ion-card-content>
   </ion-card>
 </div>
+
+
+<script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+</script>
+<script type="text/javascript">
+   (function(){
+      emailjs.init({
+        publicKey: "A8WnrlPuLYRSH7Oee",
+      });
+   })();
+</script>

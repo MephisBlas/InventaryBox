@@ -48,7 +48,7 @@ export class RegistroPage {
           (u) => u.username === this.user.username || u.email === this.user.email
         );
         if (userExists) {
-       
+          await this.showAlert('Error', 'El usuario o el correo ya existen.');
           return;
         }
       }
@@ -69,14 +69,13 @@ export class RegistroPage {
     }
   }
 
-  // Función para enviar el correo usando EmailJS
   async sendConfirmationEmail() {
     const templateParams = {
       username: this.user.username,
-      email: this.user.email,
+      email: this.user.email, // Este es el correo del destinatario
       message: `¡Hola ${this.user.username}! Gracias por registrarte en InventaryBox. Tu registro se ha completado con éxito.`,
     };
-
+  
     try {
       const response = await emailjs.send(
         this.serviceId,
@@ -84,8 +83,12 @@ export class RegistroPage {
         templateParams,
         this.userId
       );
+  
+      // Mostrar información detallada de la respuesta para diagnóstico
+      console.log('Respuesta de EmailJS:', response);
+  
       if (response.status === 200) {
-        console.log('Correo de confirmación enviado:', response);
+        console.log('Correo de confirmación enviado correctamente:', response);
       } else {
         console.error('Error al enviar el correo:', response);
         await this.showAlert('Error', 'No se ha enviado el correo de confirmación.');
@@ -95,7 +98,7 @@ export class RegistroPage {
       await this.showAlert('Error', 'No se ha enviado el correo de confirmación.');
     }
   }
-
+  
   // Función para mostrar alertas
   async showAlert(header: string, message: string) {
     const alert = await this.alertController.create({
@@ -106,3 +109,4 @@ export class RegistroPage {
     await alert.present();
   }
 }
+
