@@ -4,8 +4,8 @@ import { Platform } from '@ionic/angular';
 import { Product } from '../models/product.models';
 import { BehaviorSubject } from 'rxjs';
 import { AuthService } from './auth.service'; // Importa el servicio de autenticación
-import { EmailComposer } from '@ionic-native/email-composer/ngx'; // Asegúrate de importar EmailComposer
 import { Venta } from '../models/ventas.models';
+import emailjs from '@emailjs/browser';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +19,6 @@ export class UserService {
     private sqlite: SQLite,
     private platform: Platform,
     private authService: AuthService,
-    private emailComposer: EmailComposer // Inyecta EmailComposer
   ) {
     this.platform.ready().then(() => {
       this.createDatabase();
@@ -92,50 +91,52 @@ export class UserService {
     }
   }
 
-  // Registrar un nuevo usuario
-  async registerUser(username: string, email: string, password: string): Promise<void> {
-    if (!this.dbInstance) return;
-    const sql = 'INSERT INTO users (username, email, password) VALUES (?, ?, ?)';
-    try {
-      await this.dbInstance.executeSql(sql, [username, email, password]);
-      console.log('Usuario registrado con éxito');
-      this.sendConfirmationEmail(email); // Enviar correo de confirmación
-    } catch (error) {
-      console.error('Error al registrar el usuario:', error);
+// Registrar un nuevo usuario
+async registerUser(username: string, email: string, password: string): Promise<void> {
+  if (!this.dbInstance) return;
+  const sql = 'INSERT INTO users (username, email, password) VALUES (?, ?, ?)';
+  try {
+    await this.dbInstance.executeSql(sql, [username, email, password]);
+    console.log('Usuario registrado con éxito');
+
+    // Enviar correo de confirmación
+    const emailSent = await this.sendConfirmationEmail(username, email);
+    if (emailSent) {
+      console.log('Correo de confirmación enviado con éxito');
+    } else {
+      console.warn('No se pudo enviar el correo de confirmación');
     }
+  } catch (error) {
+    console.error('Error al registrar el usuario:', error);
   }
+}
 
-  // Enviar un correo de confirmación
-  private sendConfirmationEmail(email: string) {
-    let emailData = {
-      to: email,
-      subject: 'Registro Exitoso',
-      body: 'Gracias por registrarte. Tu cuenta ha sido creada exitosamente.',
-      isHtml: true
-    };
+// Método para enviar correo con EmailJS
+private async sendConfirmationEmail(username: string, email: string): Promise<boolean> {
+  const emailParams = {
+    to_name: username,
+    to_email: email,
+    subject: 'Registro Exitoso en InventaryBox',
+    message: `¡Hola ${username}! Gracias por registrarte en InventaryBox. Tu registro se ha completado con éxito.`,
+  };
 
-    this.emailComposer.open(emailData).then(() => {
-      console.log('Correo de confirmación enviado');
-    }).catch(error => {
-      console.error('Error al enviar correo de confirmación:', error);
-    });
+  try {
+    console.log('Enviando correo con parámetros:', emailParams);
+
+    await emailjs.send(
+      'service_ckewa4k', // Reemplaza con tu ID de servicio de EmailJS
+      'template_i3nazo4', // Reemplaza con tu ID de plantilla de EmailJS
+      emailParams,
+      'A8WnrlPuLYRSH7Oee' // Reemplaza con tu clave pública de EmailJS
+    );
+
+    return true;
+  } catch (error) {
+    console.error('Error al enviar el correo con EmailJS:', error);
+    return false;
   }
+}
 
-  // Recuperar la contraseña (enviar correo)
-  async recoverPassword(email: string): Promise<void> {
-    let emailData = {
-      to: email,
-      subject: 'Recuperación de Contraseña',
-      body: 'Haz clic en el siguiente enlace para recuperar tu contraseña: [enlace aquí]',
-      isHtml: true
-    };
-
-    this.emailComposer.open(emailData).then(() => {
-      console.log('Correo de recuperación enviado');
-    }).catch(error => {
-      console.error('Error al enviar correo de recuperación:', error);
-    });
-  }
 
   // Obtener todos los usuarios
   async getUsers(): Promise<any[]> {

@@ -10,33 +10,57 @@
 <div class="register-container animate__animated animate__fadeIn ion-padding">
   <ion-card class="register-card">
     <ion-card-header>
-      <ion-card-title class="ion-text-center animate__animated animate__bounceInDown">Crear Cuenta</ion-card-title>
+      <ion-card-title class="ion-text-center animate__animated animate__bounceInDown">
+        Crear Cuenta
+      </ion-card-title>
     </ion-card-header>
 
     <ion-card-content>
       <form (ngSubmit)="registerUser()" #registerForm="ngForm">
         <ion-item>
           <ion-label position="floating">Nombre de Usuario</ion-label>
-          <ion-input type="text" [(ngModel)]="user.username" name="username" required></ion-input>
+          <ion-input
+            type="text"
+            [(ngModel)]="user.username"
+            name="username"
+            required
+          ></ion-input>
         </ion-item>
 
         <ion-item>
           <ion-label position="floating">Correo Electrónico</ion-label>
-          <ion-input type="email" [(ngModel)]="user.email" name="email" required></ion-input>
+          <ion-input
+            type="email"
+            [(ngModel)]="user.email"
+            name="email"
+            required
+          ></ion-input>
         </ion-item>
 
         <ion-item>
           <ion-label position="floating">Contraseña</ion-label>
-          <ion-input type="password" [(ngModel)]="user.password" name="password" required></ion-input>
+          <ion-input
+            type="password"
+            [(ngModel)]="user.password"
+            name="password"
+            required
+          ></ion-input>
         </ion-item>
 
         <ion-item>
           <ion-label position="floating">Repetir Contraseña</ion-label>
-          <ion-input type="password" [(ngModel)]="user.confirmPassword" name="confirmPassword" required></ion-input>
+          <ion-input
+            type="password"
+            [(ngModel)]="user.confirmPassword"
+            name="confirmPassword"
+            required
+          ></ion-input>
         </ion-item>
 
         <div class="register-actions animate__animated animate__fadeInUp animate__delay-3s">
-          <ion-button expand="block" color="primary" type="submit" [disabled]="!registerForm.valid">Registrarse</ion-button>
+          <ion-button expand="block" color="primary" type="submit" [disabled]="!registerForm.valid">
+            Registrarse
+          </ion-button>
         </div>
       </form>
     </ion-card-content>
