@@ -6,9 +6,9 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SQLite } from '@ionic-native/sqlite/ngx';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms'; // Importa FormsModule y ReactiveFormsModule
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgChartsModule } from 'ng2-charts';
-
+import { Storage } from '@ionic/storage-angular'; // Importa Storage
 
 @NgModule({
   declarations: [AppComponent],
@@ -16,15 +16,23 @@ import { NgChartsModule } from 'ng2-charts';
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    FormsModule, // Añade esto
-    ReactiveFormsModule, // Puedes dejar esto si planeas usar formularios reactivos
+    FormsModule,
+    ReactiveFormsModule,
     NgChartsModule,
-
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    SQLite,EmailComposer,
+    SQLite,
+    EmailComposer,
+    Storage, // Añade Storage a los proveedores
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private storage: Storage) {}
+
+  async ngOnInit() {
+    // Inicializa el almacenamiento cuando la app arranca
+    await this.storage.create();
+  }
+}

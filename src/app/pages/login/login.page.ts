@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
-import { UserService } from 'src/app/services/user.service'; // Importa el servicio de usuarios
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -25,7 +25,12 @@ export class LoginPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Cualquier inicialización adicional si es necesaria
+    // Verifica si ya está autenticado
+    this.authService.isAuthenticated().then((authenticated) => {
+      if (authenticated) {
+        this.router.navigate(['/home']); // Si ya está autenticado, lo redirige a la página principal
+      }
+    });
   }
 
   async login() {
@@ -46,12 +51,12 @@ export class LoginPage implements OnInit {
         return;
       }
 
-      const foundUser = storedUsers.find((u: any) => 
+      const foundUser = storedUsers.find((u: any) =>
         u.username === this.user.username && u.password === this.user.password
       );
 
       if (foundUser) {
-        this.authService.login(foundUser); // Iniciar sesión con AuthService
+        await this.authService.login(foundUser); // Iniciar sesión con AuthService
         await this.userService.loadProducts(); // Cargar productos del usuario autenticado
 
         await this.showAlert('Éxito', `Inicio de sesión exitoso. Bienvenido, ${foundUser.username}`);
@@ -78,5 +83,9 @@ export class LoginPage implements OnInit {
 
   navigateToRegister() {
     this.router.navigate(['/registro']); // Redirige a la página de registro
+  }
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword; // Función para alternar la visibilidad de la contraseña
   }
 }

@@ -39,6 +39,7 @@
     "@ionic-native/email-composer": "^5.36.0",
     "@ionic-native/sqlite": "^5.36.0",
     "@ionic/angular": "^8.3.3",
+    "@ionic/storage-angular": "^4.0.0",
     "animate.css": "^4.1.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.3",
